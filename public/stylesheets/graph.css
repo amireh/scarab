@@ -1,42 +1,141 @@
-#generate-graph {
-  float: left;
-  clear: both;
-  width: 100%;
-  margin-bottom: 10px;
-  height: 50px;
-  -moz-box-shadow:0 0 10px 1px #999999;
-  -webkit-box-shadow:0 0 10px 1px #999999;
-  background: #eee;
-  color: #333;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
+#loader {
+  position: relative;
+  height: 0;
+  width: 0;
+  z-index: 5;
+  margin: 0; padding: 0;
 }
-#generate-graph:hover {
-  background: #ddd;
+
+.loading {
+  position: relative;
+  top: 300px;
+  left: 270px;
+  font-weight: bold;
+  font-size: 2em;
+  color: #eee;
+}
+
+#cpanel input {
+  clear: both;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+  background: #000;
+  color: #eee;
+  border: 2px solid orange; /*#ffaa00;*/
+  cursor: pointer;
+  width: 92%;
+}
+#cpanel input:hover {
+  background: orange;
+  
 }
 
 #graph {
-  float: left;
+
+  width: 1090px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #canvas {
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
-  background-color: #111;
+  background: #111 no-repeat center center;
   display: block;
   margin-bottom: 10px;
   color: #fff;
   float: left;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-right: 0;
+  width: 820px;
+  height: 540px;
+  position: relative;
 }
 
-#meta {
+#cpanel {
+  width: 240px;
+  height: 540px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;  
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
+  background-color: #111;
+  float: left;
+  margin-left: 0;
+  overflow: hidden;
+}
+
+#cpanel h3 {
+  color: #333;
+  text-align: left;
+  background: #eee;
+  margin: 0;
+  padding: 10px 0;
+  border: 0;
+  float: left;
+  width: 230px;
+  padding-left: 10px;
+}
+#cpanel ul {
+  list-style-type: none;
+  padding: 0;
+  padding-left: 15px;
+  min-width: 70%;
+  margin-top: 10px;
+  margin-bottom: 0;
+  display: block;
+  float: left;
+  width: 95%;
+}
+#meta,
+#cpanel .console {
+  float: left;
+  /*
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  */
+/*
   background: #eee;
   color: #333;
-  padding: 5px;
+  */
+  color: #eee;
+  padding: 0 15px;
   margin-bottom: 10px;
-  text-align: center;
+  text-align: left;
   font-size: 13px;
+  min-height: 20px;
+  min-width: 180px;
+}
+#meta p,
+.console p {
+  padding: 0;
+}
+#meta p span {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#graph .button {
+background: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.54, rgb(255,170,0)),
+    color-stop(1, rgb(238,238,238))
+);
+background: -moz-linear-gradient(
+    center bottom,
+    rgb(255,170,0) 54%,
+    rgb(238,238,238) 100%
+);
+}
+
+
+#cpanel .console {
+  margin-top: 10px;
+  color: #eee;
+  display: block;
 }

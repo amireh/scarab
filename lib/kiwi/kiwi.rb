@@ -21,8 +21,8 @@ module Pixy
     end
     
     def connect(node1, node2, weight)
-      #puts "+ connecting #{node1.name} to #{node2.name}"
-      @edges.push Edge.new(node1, node2, weight)
+      puts "+ connecting #{node1.name} to #{node2.name}"
+      @edges.push Edge.new(@edges.length, node1, node2, weight)
       node1.connection(@edges.last)
       node2.connection(@edges.last)
     end
@@ -41,21 +41,69 @@ module Pixy
       nodes
     end
     
+    # find nodes that are adjacent in level AND index
+    # to the node,ie: 
+    #   node.level-1 .. node.level+1 &&
+    #   node.index-1 .. node.index+1
+    def neighbors(node)
+      puts "Checking for neighbors for #{node.level}_#{node.index}"
+      neighbors = []
+      if node.level != 0
+        nodes = nodes_in_level(node.level-1)
+        puts "There are #{nodes.length} nodes in previous level"
+        range = nil
+        if node.index == 0 
+          range = node.index..node.index+2
+        elsif node.index == @levels
+          range = node.index-2..node.index
+        else
+          range = node.index-1..node.index+1
+        end
+        
+        nodes = nodes[range]
+        puts "found #{nodes.length} in level #{node.level-1}"        
+        neighbors += nodes unless nodes.empty?
+      end
+      if node.level != @levels
+        nodes = nodes_in_level(node.level+1)
+        puts "There are #{nodes.length} nodes in next level"        
+        range = nil
+        if node.index == 0
+          range = node.index..node.index+2
+        elsif node.index == @levels
+          range = node.index-2..node.index
+        else
+          range = node.index-1..node.index+1
+        end
+        nodes = nodes[range]
+        puts "found #{nodes.length} in level #{node.level+1}"
+        neighbors += nodes unless nodes.empty?
+      end
+      
+      neighbors.delete(node)
+      neighbors.delete_if { |neighbor| connected?(node, neighbor) }
+      neighbors.uniq!
+
+      puts "found #{neighbors.length} suitable neighbors"
+              
+      neighbors
+    end
+    
     def to_json
       json = { 
         :meta => {
           :root => @root.name,          
-          :levels => @levels,
+          :levels => @levels + 1,
           :nr_nodes => @nodes.length,
           :nr_edges => @edges.length
         },
         :levels => {},
         :nodes => {},
-        :edges => []
+        :edges => {}
       }
       
       @nodes.each { |node| json[:nodes][node.name] = node.to_json }
-      @edges.each { |edge| json[:edges].push edge.to_json }
+      @edges.each { |edge| json[:edges][edge.index] = edge.to_json }
       for i in 0..@levels do
         json[:levels][i] = nodes_in_level(i).count
       end
@@ -66,14 +114,15 @@ module Pixy
   end
   
   class Node
-    attr_reader :name, :level, :edges, :val, :graph
+    attr_reader :name, :index, :level, :edges, :val, :graph
     
-    def initialize(name, level, val)
+    def initialize(name, index, level, val)
       super()
       
       @name = name
       @level = level
       @val = val
+      @index = index
       
       @edges = []
       
@@ -106,21 +155,23 @@ module Pixy
 =end
     
     def to_json
-      { :level => @level, :val => @val }    
+      { :level => @level, :val => @val }
     end
     
   end
   
   class Edge
-    attr_reader :head, :tail, :weight, :directed
+    attr_reader :index, :head, :tail, :weight, :directed
     
-    def initialize(head, tail, weight, directed = false)
+    def initialize(index, head, tail, weight, directed = false)
       super()
       
+      @index = index
       @head = head
       @tail = tail
       @weight = weight
       @directed = directed
+      
     end
     
     def to_json
@@ -156,7 +207,7 @@ module Pixy
       for i in 0..@levels do
         nr_nodes = rand(3) + @min_nodes_per_level
         for j in 0..nr_nodes do
-          @graph.add_node(Node.new("node_#{i}_#{j}", i, node_val))
+          @graph.add_node(Node.new("node_#{i}_#{j}", j, i, node_val))
         end
       end
       
@@ -167,7 +218,8 @@ module Pixy
       # from there on, nodes can have from 0-4 edges
       @graph.nodes.each { |node|
         for i in 0..rand(2) do
-          @graph.connect(node, find_candidate(node), edge_val) rescue nil
+          cand = find_candidate(node)
+          @graph.connect(node, cand, edge_val) unless cand.nil?
         end
       }
       
@@ -192,17 +244,24 @@ module Pixy
     #     it's not yet connected
     #
     def find_candidate(node)
-      next_level = node.level == @levels ? node.level-1 : node.level+1
-      neighbors = @graph.nodes_in_level(next_level)
+=begin
+      neighbors = []
+      if node.level != @levels then
+        neighbors << @graph.nodes_in_level(node.level-1)
+      end
+      if node.level != 0 then
+        neighbors << @graph.nodes_in_level(node.level+1)
+      end
+
       #unless node.connected?
         
-        node.siblings.each { |sibling|
-          next if sibling.connected?
+        node.siblings[node.index-1..node.index+1].each { |sibling|
+          next if sibling.connected? or sibling == self
           return sibling
         }
         
         # look for a neighbor
-        neighbors.each { |neighbor|
+        neighbors[node.index-1..node.index+1].each { |neighbor|
           next if neighbor.connected?
           return neighbor
         }
@@ -210,12 +269,20 @@ module Pixy
         # we haven't found any, connect to a random node
         #return @graph.nodes[rand(@graph.nodes.length-1)]
       #end
-      
+=end
+      neighbors = @graph.neighbors(node)
+      return nil if neighbors.empty?
+      #raise RuntimeError if neighbors.empty?
+      tmp = neighbors[rand(neighbors.length-1)]
+      puts "Found a node #{tmp.name} out of #{neighbors.length} neighbors for node #{node.name}"
+      return tmp
+=begin
       puts "Node #{node.name} has #{node.siblings.length} siblings, and #{neighbors.length} neighbors"
       nodes = node.siblings + neighbors
       tmp = nodes[rand(nodes.length-1)]
       raise RuntimeError if tmp.nil?
       return tmp
+=end
 =begin
       # if it's connected, let's connect it to a level it's not connected to yet
       excl_levels = []
