@@ -13,12 +13,27 @@
   font-weight: bold;
   font-size: 2em;
   color: #eee;
+  display: none;
+}
+
+.welcome {
+  position: relative;
+  top: 73px;
+  left: 0;
+  font-weight: bold;
+  font-size: 2em;
+  color: #333;
+  display: block;
+  width: 820px;
+  text-align: center;
+  background: #eee;
+  padding: 10px 0;
 }
 
 #cpanel input {
   clear: both;
   -moz-border-radius: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 5px;
   margin-bottom: 10px;
   background: #000;

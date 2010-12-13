@@ -96,8 +96,10 @@ Pixy.Node = function() {
           });
           
           self.highlight_goal();
+          self.sprite.attr({ fill: "green" });
         }
         
+        return false;
       });
           
     },

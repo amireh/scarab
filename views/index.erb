@@ -59,6 +59,7 @@
         url: "/graph.json",
         beforeSend: function() {
           Pixy.Kiwi.cleanup();
+          $("#loader .welcome").hide();
           $("#canvas").css("background-image", "url('/images/loaders/8.gif')");
           $("#loader .loading").show();
         },
@@ -71,7 +72,7 @@
 
       return false;
       
-    }).click();
+    });
     
     $("#toggle-weights").click(function() {
       Pixy.Kiwi.toggle_weights();
@@ -103,7 +104,10 @@
   </div>
   
   <div class="grid_14">
-    <div id="loader"><span class="loading">..GENERATING..</span></div>
+    <div id="loader">
+      <span class="loading">..GENERATING..</span>
+      <span class="welcome">Use the button to the left to generate<br /> a graph and begin.</span>
+    </div>
     <div id="canvas" ></div>
   </div>
 </div>
