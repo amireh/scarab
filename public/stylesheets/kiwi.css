@@ -1,0 +1,12 @@
+body, p, ul, li, input {
+  font-family: verdana, 'Lucida Grande', helvetica, verdana, arial, sans-serif;
+}
+
+body {
+  background-color: #eee;
+}
+
+.container {
+  /*margin-right: 0;*/
+}
+

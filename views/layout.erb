@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+  <title>KiWi</title>
+
+  <%= stylesheets "grid", "kiwi" %>
+  <%= javascripts "jquery-1.4.4.min" %>
+
+  	
+  <% yield_content :scripts %>
+
+</head>
+
+<body>
+
+<div class="container_16 container">
+  
+  <div id="header" class="clearfix header">
+  </div>
+      
+  <div id="content" class="grid_16 content">
+    <%= yield %>
+  </div> <!-- content -->
+
+</div>
+
+</body>
+</html>

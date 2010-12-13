@@ -1,0 +1,69 @@
+<% content_for :scripts do %>
+
+  <%= stylesheets "graph" %>
+  <%= javascripts "raphael", "kiwi" %>
+  
+<script>
+  
+  function print_graph(graph) {
+    
+    Pixy.Kiwi.cleanup();
+    Pixy.Kiwi.set_meta(graph.meta);
+    Pixy.Kiwi.set_levels(graph.levels);
+    
+    $("#meta").empty();
+    $("#meta").append("<span>there are (" + 
+      graph.meta.nr_nodes + ") nodes and (" + 
+      graph.meta.nr_edges + ") edges defined across " + 
+      graph.meta.levels + " levels</span>");
+    
+    $.each(graph.nodes, function(id, params) {
+      Pixy.Kiwi.draw_node(id, params.level, params.val);
+    });
+    
+    $.each(graph.edges, function(i, params) {
+      Pixy.Kiwi.draw_edge(params.head, params.tail, params.weight);
+    });
+    
+    Pixy.Kiwi.highlight_root(graph.meta.root);
+  };
+  
+  $(function() {
+    
+    Pixy.Kiwi.setup();
+    Pixy.Kiwi.on_node_click(function(id, level, val) {
+      $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: "/path",
+        data: { "id": id, "level": level, "val": val },
+        success: function(data) {
+        }
+      });
+    });
+    
+    var graph = "fack";
+    
+    
+    
+    
+    $("#generate-graph").click(function() {
+
+      $.getJSON("/graph.json", function(data) {
+        graph = data;
+        print_graph(graph);
+      });
+      return false;
+      
+    }).click();
+  });
+</script>
+  
+<% end %>
+
+<div id="graph" class="grid_14">
+  <div id="meta"></div>
+  <div id="canvas" ></div>
+  <input type="button" id="generate-graph" value="Generate Graph" />
+</div>
+

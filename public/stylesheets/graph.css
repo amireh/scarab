@@ -1,0 +1,42 @@
+#generate-graph {
+  float: left;
+  clear: both;
+  width: 100%;
+  margin-bottom: 10px;
+  height: 50px;
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  background: #eee;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+#generate-graph:hover {
+  background: #ddd;
+}
+
+#graph {
+  float: left;
+}
+
+#canvas {
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  background-color: #111;
+  display: block;
+  margin-bottom: 10px;
+  color: #fff;
+  float: left;
+}
+
+#meta {
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  background: #eee;
+  color: #333;
+  padding: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 13px;
+}
