@@ -22,7 +22,7 @@ a {
 }
 
 .footer {
-  -moz-border-radius: 10px;
+  -moz-border-radius: 5px;
   border-radius: 5px;  
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
@@ -32,6 +32,8 @@ a {
   padding: 0 10px;
   padding-top: 2px;
   text-align: center;
+  margin-top: 10px;
+  float: left;
 }
 
 .footer span {
@@ -41,4 +43,8 @@ a {
 .header span {
   font-size: 16px;
   font-style: italic;
+}
+
+.hidden {
+  display: none;
 }

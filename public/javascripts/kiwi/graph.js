@@ -16,12 +16,24 @@ Pixy.Graph = function() {
     var id = parseInt(name.replace("node_" + level + "_", ""));
     var pos = { x: 0, y: 0 };
     
-    step.x = parseInt( (740 - (nr_levels+1) * dim.w) / (nr_levels+1));
-    step.y = parseInt( (580 - levels[level] * dim.h) / levels[level]);
+    var win_w = 820 - dim.w;
+    var win_h = 540 - dim.h;
     
-    pos.x = (level+1) * ( dim.w + step.x) + step.x / 2;
-    pos.y = id * (dim.h + step.y) + step.y / 2;
-          
+    step.x = parseInt( (win_w - (nr_levels * dim.w)) / nr_levels);
+    step.y = parseInt( (win_h - (levels[level] * dim.h)) / levels[level] );
+    
+    pos.x = level * (dim.w + step.x) + step.x;
+    if (nr_levels >= 8)
+      pos.x += dim.w/2;
+    
+    pos.y = id * (dim.h + step.y) + step.y;
+    if (levels[level] == 4)
+      pos.y += dim.h/3;
+    else if (levels[level] > 4)
+      pos.y += dim.h/2;
+    else {
+    }
+        
     return pos;
   };
   
@@ -163,6 +175,7 @@ Pixy.Graph = function() {
     search: function(start, goal, heuristic) {
     
       this.reset();
+      var timer_start = new Date();
       
       start = this.root;
       console.log("Determining path from " + start.index + " to " + goal.index);
@@ -226,6 +239,16 @@ Pixy.Graph = function() {
 		    
       }
       
+      var timer_finish = new Date();
+      if ($("#timer")) {
+        $("#timer").remove();
+      }
+      
+      console.log("Timers: " + timer_start.getTime() + " , " + timer_finish.getTime());
+        
+      $("#meta p").append("<label id='timer'><br />search took <span>" 
+      + (timer_finish.getTime() - timer_start.getTime()) 
+      + "ms</span></label>");
       if (openHeap.size() != 0) {
         // we found a path, trace it
         console.log("path found");

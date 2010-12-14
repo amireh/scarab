@@ -30,7 +30,8 @@
   $(function() {
     
     Pixy.Kiwi.setup();   
-    
+    //$("#loader").hide();
+    $("#overlay").hide();
     $("#generate-graph").click(function() {
 
       $.ajax({
@@ -62,21 +63,24 @@
       Pixy.Kiwi.graph.highlight_path();
     });
     
+    $("#choose-heuristic").click(function() {
+      $("#overlay").toggle();
+      $("#overlay-change-heuristic").show();
+    });
+    
   });
 </script>
   
 <% end %>
 
-<div id="graph">
+<div id="graph-container">
   
   <div id="cpanel" class="cpanel grid_3">
     <h3 class="console_header">Console</h3>
     <div id="meta">
-    <!--
-      <ul>
-      </ul>
-    -->
-    <p>Graph metadata and other resources will be displayed here.</p>
+      <p>Graph metadata and other resources will be displayed here.
+      
+      </p>
     </div>
     
     <div class="controls">
@@ -91,7 +95,34 @@
 
   </div>
   
-  <div class="grid_14">
+  <div id="graph" class="grid_14">
+    <div id="overlay" class="hidden">
+      <div id="overlay-change-heuristic">
+        <h1 style="text-align: center">Available heuristic methods</h1>
+        <input type="button" class="button" id="heuristic-manhattan" value="Manhattan's Distance" />
+        <input type="button" class="button" id="heuristic-euclidean" value="Euclidean Distance" />
+        <p>
+          The method performed to calculate the heuristic of a node during pathfinding 
+          plays a critical role 
+          in the efficiency and accuracy of the search. Furthermore, the admissibility
+          of the method could even affect whether a path is to be found or not.
+        </p>
+        <p>Formulaes:
+          <ul>
+            <li>Manhattan's: 
+              <span class="formulae">
+                H = |root.x-goal.x| + |root.y-goal.y|
+              </span>
+            </li>
+            <li>Euclidean:
+              <span class="formulae">
+                H = √[(root.x - goal.x)^2 + (root.y - goal.y)^2]
+              </span>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </div>
     <div id="loader">
       <span class="loading">..GENERATING..</span>
       <span class="welcome">Use the button to the left to generate<br /> a graph and begin.</span>

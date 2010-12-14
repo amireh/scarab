@@ -1,4 +1,5 @@
-#loader {
+#loader,
+#overlay {
   position: relative;
   height: 0;
   width: 0;
@@ -16,7 +17,18 @@
   display: none;
 }
 
-.welcome {
+#overlay {
+  position: absolute;
+  width: 740px;
+  height: 360px;
+  background: #eee;
+  color: #333;
+  opacity: 0.8;
+  top: 70px;
+  padding: 20px 40px;
+}
+
+.welcome{
   position: relative;
   top: 73px;
   left: 0;
@@ -49,21 +61,6 @@
   font-size: 13px;
   line-height: 28px;
   padding: 0 5px;
-  /*
-background: -webkit-gradient(
-    linear,
-    left bottom,
-    right bottom,
-    color-stop(0.7, rgb(17,17,17)),
-    color-stop(1, rgb(51,51,51))
-);
-background: -moz-linear-gradient(
-    left center,
-    rgb(17,17,17) 70%,
-    rgb(51,51,51) 100%
-);
-*/
-
 }
 
 .controls ul li:hover {
@@ -113,21 +110,29 @@ background: -moz-linear-gradient(
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
-#graph {
-
+#graph-container {
 }
 
-#canvas {
+#graph {
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
   background: #111 no-repeat center right;
   background-image: url("/images/ai_gs.png");
-  display: block;
-  margin-bottom: 10px;
-  color: #fff;
-  float: left;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  width: 820px;
+  height: 540px;
+  display: block;
+  float: left;
+}
+
+#canvas {
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  display: block;
+ 
+  color: #fff;
+  float: left;
   margin-right: 0;
   width: 820px;
   height: 540px;
@@ -187,46 +192,33 @@ background: -moz-linear-gradient(
   font-weight: bold;
 }
 
-#graph .button {
-background: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.54, rgb(255,170,0)),
-    color-stop(1, rgb(238,238,238))
-);
-background: -moz-linear-gradient(
-    center bottom,
-    rgb(255,170,0) 54%,
-    rgb(238,238,238) 100%
-);
+.button {
+  padding: 20px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #222;
+  background: #111;
+  color: #eee;
+  cursor: pointer;
 }
-
-
+.button:hover {
+  background: #eee;
+  color: #111;
+}
+#overlay-change-heuristic p {
+  text-align: justify;
+}
+#overlay-change-heuristic .button {
+  width: 49%;
+  font-size: 24px;
+}
+.formulae {
+  font-style: italic;
+  font-size: 13px;
+}
 #cpanel .console {
   margin-top: 10px;
   color: #eee;
   display: block;
 }
 
-#cpanel .tabs {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  width: 240px;
-  border-radius: 5px;
-}
-
-#cpanel .tabs li {
-  float: left;
-
-  background: #eee;
-  color: #333;
-  padding: 5px 5px;
-  width: 110px;
-  text-align: center;
-}
-#cpanel .tabs li.selected {
-  background: #111;
-  color: #eee;
-}
