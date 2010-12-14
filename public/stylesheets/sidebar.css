@@ -32,6 +32,14 @@
   padding-left: 10px;
 }
 
+#sidebar .header h3 {
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-topleft: 8px;
+  
+  border-radius-topleft: 8px;
+  border-radius-topright: 8px;
+}
+
 #sidebar input {
   clear: both;
   -moz-border-radius: 5px;
@@ -72,14 +80,6 @@
   font-size: 13px;
 }
 
-#sidebar .console .header {
-  -moz-border-radius-topright: 8px;
-  -moz-border-radius-topleft: 8px;
-  
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
 #sidebar .console p {
   padding: 0;
   line-height: 2em;
@@ -89,6 +89,35 @@
   font-weight: bold;
 }
 
+.console ul {
+  padding: 0;
+  margin: 0;
+  display: block inline;
+  width: 100%;
+  list-style-type: none;
+}
+
+.console li {
+  float: left;
+  clear: both;
+  font-family: "Monospace";
+}
+
+.consolie li span {
+  float: left;
+}
+
+#caret {
+  float: right;
+  height: 14px;
+  margin-left: 2px;
+  position: relative;
+  top: 0px;
+  width: 3px;
+}
+#caret.white {
+  background: #eee;
+}
 /* -------- *
  * CONTROLS *
  * -------- */

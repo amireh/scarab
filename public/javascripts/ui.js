@@ -5,11 +5,16 @@ function print_graph(graph) {
   
   $("#loader .loading").html("..VISUALIZING..");
       
-  $("#meta").empty();
+  $("#meta ul").empty();
+  /*
   $("#meta").html("<p>there are <span>" + graph.meta[1] + "</span> nodes connected by "
     + "<span>" + graph.meta[2] + "</span> edges across <span>"
     + graph.meta[0] + "</span> levels</p>");
-    
+  */
+  Scarab.log("levels: " + graph.meta[0]);
+  Scarab.log("nodes: " + graph.meta[1]);
+  Scarab.log("edges: " + graph.meta[2]);
+  
   Scarab.visualize(graph, function() {
     $("#loader .loading").hide();
     $("#tooltip-loading").hide();
@@ -31,7 +36,8 @@ function show_tooltip(msg) {
 $(function() {
   
  
-  Scarab.setup();   
+  Scarab.setup();
+  Scarab.log("MUAHAH");  
   //$("#loader").hide();
   $("#overlay").hide();
   

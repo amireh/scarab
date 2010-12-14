@@ -259,7 +259,9 @@ Graph.prototype = {
     // display time taken for the search
     var timer_finish = new Date();
     var time_elapsed = timer_finish.getTime() - timer_start.getTime();
-    $("#timer").html("search took <span>" + time_elapsed + "ms</span>");
+    //$("#timer").html("search took <span>" + time_elapsed + "ms</span>");
+    $("#timer").remove();
+    Scarab.log("search took " + time_elapsed + "ms", "timer");
     
     if (open.size() != 0) {
       // we found a path, trace it

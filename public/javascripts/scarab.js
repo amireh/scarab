@@ -23,6 +23,33 @@ Scarab.Context = null;
 Scarab = function() {
 
   return {
+    console_caret: function() {
+      if ($("#caret").hasClass("white"))
+        $("#caret").removeClass("white");
+      else
+        $("#caret").addClass("white");
+      
+      //$("#caret").toggleClass("white", $("#caret").hasClass("white"));
+    },
+    caret_msg: function(el, msg, i) {
+      if (i > msg.length)
+        return;
+      
+      el.append(msg[i]);
+      
+      return setTimeout(Scarab.caret_msg, 50, el, msg, i+1);
+    },
+    log: function(msg, id) {
+      if ($("#caret"))
+        $("#caret").remove();
+      
+      id = (id == null) ? "" : " id='" + id + "'";
+      $("#meta ul").append("<li" + id + " ><span>scarab:~$ " + msg + "</span></li>");
+      var li = $("#meta ul li:last span:first");
+      
+      //this.caret_msg(li, msg, 0);
+      
+    },
     setup: function() {
       /*
 			Scarab.Canvas =  document.getElementById('Scarab.Canvas');
@@ -39,7 +66,8 @@ Scarab = function() {
 			}
 			*/
 			Scarab.Canvas = Raphael(Meta.Canvas.Element, Meta.Canvas.Width, Meta.Canvas.Height);
-			
+			$("#meta ul").append("<li>scarab:~$ waiting<span id='caret'></span></li>");
+			//setInterval(Scarab.console_caret, 500);
     },
     
     visualize: function(data, callback) {
