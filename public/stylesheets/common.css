@@ -6,24 +6,29 @@ body {
   background: url("/images/bg.png") repeat;
   color: #333;
 }
+
 a {
   color: #a60000;
 }
 
 h1,h2,h3 {
   font-family: "JUICERegular";
-
 }
 
 .container {
-  /*margin-right: 0;*/
-}
-
-.content,
-.header {
   width: 1090px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.content {
+  display: inline block;
+  clear: both;
+}
+
+.header {
+  display: inline block;
+  clear: both;
 }
 
 .header h1 {
@@ -36,18 +41,22 @@ h1,h2,h3 {
 }
 .header h1 span {
   letter-spacing: 0;
+  font-size: 16px;
+  font-style: italic;
 }
+
 .footer {
   -moz-border-radius: 5px;
   border-radius: 5px;  
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
-  width: 1060px;
+  width: 1058px;
   clear: both;
   padding: 0 10px;
   text-align: center;
   margin-top: 10px;
   float: left;
+  border: 1px solid #ddd;
 }
 
 .footer span {
@@ -58,11 +67,20 @@ h1,h2,h3 {
   letter-spacing: 1px;
 }
 
-.header span {
-  font-size: 16px;
-  font-style: italic;
-}
-
 .hidden {
   display: none;
+}
+
+.button {
+  padding: 20px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #222;
+  background: #111;
+  color: #eee;
+  cursor: pointer;
+}
+.button:hover {
+  background: #eee;
+  color: #111;
 }

@@ -1,0 +1,136 @@
+/* -------
+ * SIDEBAR
+ * ------- */
+ 
+#sidebar {
+  position: relative;
+  float: left;  
+  width: 240px;
+  height: 540px;
+  
+  -moz-border-radius: 10px;
+  border-radius: 10px;  
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  
+  background-color: #111;
+  overflow: hidden;
+  display: inline;
+  margin: 0 10px 0 0;
+
+}
+
+#sidebar h3 {
+  color: #333;
+  text-align: left;
+  background: #eee;
+  margin: 0;
+  padding: 10px 0;
+  border: 0;
+  float: left;
+  width: 230px;
+  padding-left: 10px;
+}
+
+#sidebar input {
+  clear: both;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  width: 92%;
+
+}
+#sidebar input:hover {
+  background: orange;
+}
+
+#sidebar input:disabled {
+  border-color: #eee;
+  cursor: default;
+}
+#sidebar input:disabled:hover {
+  background: #000;
+}
+
+/* ----------- *
+ * CONSOLE BOX *
+ * ----------- */
+#sidebar .console {
+  display: block;
+  float: left;
+
+  min-height: 20px;
+  min-width: 180px;
+
+  margin: 10px 0 0 0;
+  padding: 0 15px;
+  
+  color: #eee;
+  text-align: justify;
+  font-size: 13px;
+}
+
+#sidebar .console .header {
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-topleft: 8px;
+  
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+#sidebar .console p {
+  padding: 0;
+  line-height: 2em;
+}
+#sidebar .console p span {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+/* -------- *
+ * CONTROLS *
+ * -------- */
+ 
+
+.controls ul {
+  list-style-type: none;
+  padding: 0;
+  min-width: 70%;
+  margin: 0;
+  display: block;
+  float: left;
+  width: 100%;
+  overflow: hidden;
+}
+.controls ul li {
+  border-bottom: 1px solid #222; /*#ffaa00;*/
+  background: url("/images/arrow_gray.png") no-repeat 2px center #000;
+  color: #eee;
+  width: 100%;
+  font-size: 13px;
+  line-height: 28px;
+  padding: 0 5px;
+}
+
+.controls ul li:hover {
+  background: url("/images/arrow_orange.png") no-repeat 2px center #111;
+}
+.controls ul li a {
+  color: #eee;
+  margin-left: 15px;
+  cursor: pointer;
+  display: block;
+  padding: 3px 0 0 0;
+}
+
+.controls ul li a:hover {
+  text-decoration: underline;
+}
+
+.controls ul li a.disabled {
+  text-decoration: line-through;
+  cursor: default;
+}
+ 

@@ -59,9 +59,13 @@ Pixy.Node = function() {
       this.sprite.attr(this.style);
 			
 			this.label = Pixy.canvas.text(this.pos.x, this.pos.y, this.val);
-			this.label.attr({fill: "#ffffff", font: "18px verdana", "font-weight": "bold", cursor: "default"});
-			
+			this.label.attr({fill: "#ffffff", font: "18px verdana", "font-weight": "bold", cursor: "pointer"});
+
 			self = this;
+			
+			$(this.label.node).mouseover(function() {
+			  self.highlight()
+			});
 			
       $(this.sprite.node).mouseover(function() {
         self.highlight();
@@ -71,27 +75,8 @@ Pixy.Node = function() {
         self.dehighlight();
       });
       
-      $(this.sprite.node).click(function() {
-        /*
-        $.ajax({
-          type: "GET",
-          dataType: "json",
-          url: "/path.json",
-          data: { root: Pixy.Kiwi.graph.root, dest: self.index },
-          beforeSend: function() {
-            $("#cpanel .console").html("...GENERATING BEST PATH...");
-          },
-          success: function() {
-          
-          }
-        });
-        */
-        ///console.log("Asking for path from " + self.index);
-        var nodes = Pixy.Kiwi.graph.search(null, self, null);
-        Pixy.Kiwi.graph.highlight_path();
-        
-        return false;
-      });
+      $(this.label.node).click(function() { $(self.sprite.node).click(); });
+      $(this.sprite.node).click(function() { Pixy.Kiwi.graph.search(null, self, null); });
           
     },
     highlight_root: function() {

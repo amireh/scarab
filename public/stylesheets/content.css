@@ -1,0 +1,128 @@
+#about {
+  color: #eee;
+  padding: 0 0 0 20px;
+  width: 220px;
+  text-align: left;
+  letter-spacing: 0.4px;
+  position: absolute;
+}
+
+/* ------------------- *
+ * OVERLAYS & TOOLTIPS *
+ * ------------------- */
+#loader,
+#overlay,
+#tooltips {
+  position: relative;
+  height: 0;
+  width: 0;
+  z-index: 5;
+  margin: 0; padding: 0;
+}
+
+#overlay {
+  position: absolute;
+  width: 740px;
+  height: 360px;
+  background: #eee;
+  color: #333;
+  opacity: 0.9;
+  top: 70px;
+  padding: 20px 40px;
+}
+
+#tooltips {
+  position: absolute;
+  width: 740px;
+  height: 80px;
+  background: #eee;
+  color: #333;
+  opacity: 0.9;
+  top: 70px;
+  padding: 20px 40px;
+}
+
+#tooltip-welcome h1 {
+  margin:0;
+  padding:0;
+
+}
+.close-tooltip,
+.close-overlay {
+  float: right;
+  font-weight: bold;
+  color: #a60000;
+  cursor: pointer;
+}
+.welcome {
+  position: relative;
+  top: 73px;
+  left: 0;
+  font-weight: bold;
+  font-size: 2em;
+  color: #333;
+  display: block;
+  width: 820px;
+  text-align: center;
+  background: #eee;
+  padding: 10px 0;
+  opacity: 0.8;
+}
+
+.loading {
+  position: relative;
+  top: 310px;
+  left: 300px;
+  font-weight: bold;
+  font-size: 2em;
+  color: #eee;
+  display: none;
+}
+
+#overlay-change-heuristic p {
+  text-align: justify;
+}
+#overlay-change-heuristic .button {
+  width: 49%;
+  font-size: 24px;
+}
+.formulae {
+  font-style: italic;
+  font-size: 13px;
+}
+
+/* ------------- *
+ * PAGE & CANVAS *
+ * ------------- */
+#page {
+  position: relative;
+  float: left;
+    
+  width: 820px;
+  height: 540px;
+
+  margin-left: 10px;
+  margin-right: 10px;
+
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+
+  background: #111 no-repeat center right;
+  background-image: url("/images/scarab.png");
+
+}
+
+#canvas {
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  display: block;
+ 
+  color: #fff;
+  float: left;
+  margin-right: 0;
+  width: 820px;
+  height: 540px;
+  position: relative;
+}

@@ -1,0 +1,26 @@
+<div id="overlay-change-heuristic">
+  <h1 style="text-align: center">Available heuristic methods</h1>
+  <input type="button" class="button" id="heuristic-manhattan" value="Manhattan's Distance" />
+  <input type="button" class="button" id="heuristic-euclidean" value="Euclidean Distance" />
+  <p>
+    The method performed to calculate the heuristic of a node during pathfinding 
+    plays a critical role 
+    in the efficiency and accuracy of the search. Furthermore, the admissibility
+    of the method could even affect whether a path is to be found or not.
+  </p>
+  <p>Formulaes:
+    <ul>
+      <li>Manhattan's: 
+        <span class="formulae">
+          H = |root.x-goal.x| + |root.y-goal.y|
+        </span>
+      </li>
+      <li>Euclidean:
+        <span class="formulae">
+          H = √[(root.x - goal.x)^2 + (root.y - goal.y)^2]
+        </span>
+      </li>
+    </ul>
+  </p>
+  <span class="close-overlay">[ close ]</span>
+</div>

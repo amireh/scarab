@@ -263,6 +263,7 @@ Pixy.Graph = function() {
 			    }
 			    this.last_path = ret.reverse();
 			    console.log(this.last_path);
+			    this.highlight_path();
 			    return this.last_path;
       } else {
         // we didn't find a path

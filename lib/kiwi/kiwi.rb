@@ -21,7 +21,7 @@ module Pixy
     end
     
     def connect(node1, node2, weight)
-      puts "+ connecting #{node1.name} to #{node2.name}"
+      # puts "+ connecting #{node1.name} to #{node2.name}"
       @edges.push Edge.new(@edges.length, node1, node2, weight)
       node1.connection(@edges.last)
       node2.connection(@edges.last)
@@ -46,11 +46,11 @@ module Pixy
     #   node.level-1 .. node.level+1 &&
     #   node.index-1 .. node.index+1
     def neighbors(node)
-      puts "Checking for neighbors for #{node.level}_#{node.index}"
+      # puts "Checking for neighbors for #{node.level}_#{node.index}"
       neighbors = []
       if node.level != 0
         nodes = nodes_in_level(node.level-1)
-        puts "There are #{nodes.length} nodes in previous level"
+        # puts "There are #{nodes.length} nodes in previous level"
         range = nil
         if node.index == 0 
           range = node.index..node.index+2
@@ -61,12 +61,12 @@ module Pixy
         end
         
         nodes = nodes[range]
-        puts "found #{nodes.length} in level #{node.level-1}"        
+        # puts "found #{nodes.length} in level #{node.level-1}"        
         neighbors += nodes unless nodes.empty?
       end
       if node.level != @levels
         nodes = nodes_in_level(node.level+1)
-        puts "There are #{nodes.length} nodes in next level"        
+        # puts "There are #{nodes.length} nodes in next level"        
         range = nil
         if node.index == 0
           range = node.index..node.index+2
@@ -76,7 +76,7 @@ module Pixy
           range = node.index-1..node.index+1
         end
         nodes = nodes[range]
-        puts "found #{nodes.length} in level #{node.level+1}"
+        # puts "found #{nodes.length} in level #{node.level+1}"
         neighbors += nodes unless nodes.empty?
       end
       
@@ -84,7 +84,7 @@ module Pixy
       neighbors.delete_if { |neighbor| connected?(node, neighbor) }
       neighbors.uniq!
 
-      puts "found #{neighbors.length} suitable neighbors"
+      # puts "found #{neighbors.length} suitable neighbors"
               
       neighbors
     end
@@ -143,16 +143,6 @@ module Pixy
     def siblings
       @graph.nodes_in_level(@level) - [self] || []
     end
-=begin
-    def adjacents
-      nodes = []
-      @edges.each do |edge|
-        nodes.push(edge.head == self ? edge.tail : edge.head)
-      end
-     
-      nodes
-    end
-=end
     
     def to_json
       { :level => @level, :val => @val }
@@ -195,7 +185,7 @@ module Pixy
     end
     
     def log(msg)
-      puts "+ #{msg}"
+      # puts "+ #{msg}"
     end
     
     def generate_graph
@@ -203,7 +193,7 @@ module Pixy
       @graph.levels = @levels
           
       # generate nodes in each level
-      log "generating nodes"
+      # log "generating nodes"
       for i in 0..@levels do
         nr_nodes = rand(3) + @min_nodes_per_level
         for j in 0..nr_nodes do
@@ -211,7 +201,7 @@ module Pixy
         end
       end
       
-      log "there are #{@graph.nodes.length} nodes across #{@levels} levels"
+      # log "there are #{@graph.nodes.length} nodes across #{@levels} levels"
       
       # connect the levels
       # each level must be connected by at least 1 edge with the next one
@@ -244,64 +234,15 @@ module Pixy
     #     it's not yet connected
     #
     def find_candidate(node)
-=begin
-      neighbors = []
-      if node.level != @levels then
-        neighbors << @graph.nodes_in_level(node.level-1)
-      end
-      if node.level != 0 then
-        neighbors << @graph.nodes_in_level(node.level+1)
-      end
-
-      #unless node.connected?
-        
-        node.siblings[node.index-1..node.index+1].each { |sibling|
-          next if sibling.connected? or sibling == self
-          return sibling
-        }
-        
-        # look for a neighbor
-        neighbors[node.index-1..node.index+1].each { |neighbor|
-          next if neighbor.connected?
-          return neighbor
-        }
-        
-        # we haven't found any, connect to a random node
-        #return @graph.nodes[rand(@graph.nodes.length-1)]
-      #end
-=end
       neighbors = @graph.neighbors(node)
       return nil if neighbors.empty?
-      #raise RuntimeError if neighbors.empty?
-      tmp = neighbors[rand(neighbors.length-1)]
-      puts "Found a node #{tmp.name} out of #{neighbors.length} neighbors for node #{node.name}"
-      return tmp
-=begin
-      puts "Node #{node.name} has #{node.siblings.length} siblings, and #{neighbors.length} neighbors"
-      nodes = node.siblings + neighbors
-      tmp = nodes[rand(nodes.length-1)]
-      raise RuntimeError if tmp.nil?
-      return tmp
-=end
-=begin
-      # if it's connected, let's connect it to a level it's not connected to yet
-      excl_levels = []
-      node.adjacents.each do |adj|
-        excl_levels.push adj.level unless excl_levels.include? adj.level
-      end
-      levels = (0..@nr_levels).to_a - excl_levels
-      unrelated = []
-      levels.each do |level| unrelated.push(@graph.nodes_in_level(level)) end
 
-      puts "found #{unrelated.length} unrelated nodes"
-      
-      return unrelated[rand(unrelated.length-1)]
-=end
+      tmp = neighbors[rand(neighbors.length-1)]
+      # puts "Found a node #{tmp.name} out of #{neighbors.length} neighbors for node #{node.name}"
+      return tmp
     end
     
   end
   
 end
 
-#app = Pixy::Kiwi.new
-#app.generate_graph

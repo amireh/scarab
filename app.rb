@@ -1,12 +1,35 @@
-# myapp.rb
-ENV['APP_ROOT'] ||= File.dirname(__FILE__)
+# app.rb
 
-# config script
-require ENV['APP_ROOT'] + '/lib/common.rb'
+ENV['APP_ROOT'] ||= File.dirname(__FILE__)
+$LOAD_PATH << File.join(File.dirname(__FILE__), 'lib')
+
+require 'rubygems'
+require 'fileutils'
+require 'sinatra'
+require 'sinatra/base'
+require 'sinatra/content_for'
+require 'erb'
+require 'json'
+require 'kiwi/kiwi'
 
 module Pixy
-  class KiwiApp < Application
+  class KiwiApp < Sinatra::Application
     include Sinatra::ContentFor
+
+    # -+-+-+-+-+-+-+-+- #
+    # - CONFIGURATION - #
+    # -+-+-+-+-+-+-+-+- #
+    configure do
+      set :root,ENV['APP_ROOT']
+      disable :sessions, :clean_trace
+      disable :run
+
+      mime_type :ttf, 'ttf'
+      mime_type :woff, 'woff'
+      mime_type :svg, 'svg'
+      mime_type :eot, 'eot'
+      
+    end
    
     helpers do
       def javascripts(*files)

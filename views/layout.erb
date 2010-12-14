@@ -5,12 +5,8 @@
 
   <title>Scarab</title>
 
-  <%= stylesheets "grid", "kiwi",
-    "fonts/Juice/stylesheet", 
-    "fonts/Sansation/stylesheet"
-  %>
+  <%= stylesheets "common", "fonts/Juice/stylesheet", "fonts/Sansation/stylesheet" %>
   <%= javascripts "jquery-1.4.4.min" %>
-
   	
   <% yield_content :scripts %>
 
@@ -18,22 +14,22 @@
 
 <body>
 
-<!--<div class="container_16 container">-->
 <div class="container">
-  
-  <div id="header" class="clearfix header">
+
+  <!-- header -->  
+  <div id="header" class="header">
     <h1>Scarab<span> - an A* pathfinding simulator</span></h1>
   </div>
-      
+  
+  <!-- content -->
   <div id="content" class="content">
     <%= yield %>
+  </div> 
 
+  <!-- footer -->
   <div id="footer" class="footer">
-    <% yield :footer %>
-    <span>Tested under: Chromium™ 8.0, Firefox™ 3.6, Opera™ 10.6. Optimally viewed in Chromium™ in 1280x800> resolution. Developed by <a href="http://www.amireh.net">Amireh</a> 2010 </span>
-  </div>
-
-  </div> <!-- content -->
+    <span>Tested under: Chromium™ 8.0, Firefox™ 3.6, Opera™ 10.6. Optimally viewed in Chromium™ in 1280x800> resolution. Developed by <a href="http://www.amireh.net">Amireh</a> 2010</span>
+  </div> 
 
 </div>
 

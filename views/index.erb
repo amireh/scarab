@@ -1,207 +1,45 @@
 <% content_for :scripts do %>
 
-  <%= stylesheets "graph" %>
-  <%= javascripts "raphael", "kiwi", "kiwi/bheap", "kiwi/graph", "kiwi/node", "kiwi/edge" %>
-  
-<script>
-  
-  function print_graph(graph) {
-    
-    Pixy.Kiwi.cleanup();
-    $("#canvas").show();
-    
-    $("#loader .loading").html("..VISUALIZING..");
-        
-    $("#meta").empty();
-    $("#meta").html("<p>there are <span>" + graph.meta.nr_nodes + "</span> nodes connected by "
-      + "<span>" + graph.meta.nr_edges + "</span> edges across <span>"
-      + graph.meta.levels + "</span> levels</p>");
-      
-    Pixy.Kiwi.visualize(graph, function() {
-      $("#loader .loading").hide();
-      $("#tooltip-loading").hide();
-      $("#tooltips").hide();
-      
-      $("#canvas").css("background-image", "none");
-
-      $("#toggle-weights").removeClass("disabled");
-      $("#choose-heuristic").removeClass("disabled");
-      
-
-    });
-    
-  };
-  
-  function show_tooltip(msg) {
-    $("#tooltips").show();
-    $("#tooltip-dynamic").html(msg);
-  }
-  
-  $(function() {
-    
-    Pixy.Kiwi.setup();   
-    //$("#loader").hide();
-    $("#overlay").hide();
-    
-    $("#tooltip-welcome").show();
-    
-    $("#generate-graph").click(function() {
-
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: "/graph.json",
-        beforeSend: function() {
-          Pixy.Kiwi.cleanup();
-          $("#about").hide();
-          $("#tooltips").show();
-          $("#tooltip-welcome").hide();
-          $("#tooltip-loading").show();
-          $("#canvas").show();
-          $("#canvas").css("background", "url('/images/loaders/8.gif') #111 no-repeat center center");
-          $("#loader .loading").show();
-        },
-        success: function(data) {
-          
-          graph = data;
-          setTimeout(print_graph, 1000, graph);
-        }
-      });
-
-      return false;
-      
-    });
-    
-    $("#toggle-weights").click(function() {
-      if ($(this).hasClass("disabled"))
-        return false;
-
-      Pixy.Kiwi.toggle_weights();
-    });
-    
-    $("#replay-path").click(function() {
-      if ($(this).hasClass("disabled"))
-        return false;
-        
-      Pixy.Kiwi.graph.highlight_path();
-    });
-    
-    $("#choose-heuristic").click(function() {
-      if ($(this).hasClass("disabled"))
-        return false;
-        
-      $("#overlay").toggle();
-      $("#overlay-change-heuristic").show();
-    });
-    
-    $("#header h1").click(function() {
-      Pixy.Kiwi.cleanup();
-      $("#canvas").hide();
-      
-      $("#about").show();
-    });
-    
-    $(".close-tooltip").click(function() {
-      $("#tooltips").hide();
-    });
-    
-    $("#heuristic-manhattan").click(function() {
-      $("#overlay-change-heuristic").hide();    
-      $("#overlay").hide();
-    });
-    
-    $("#heuristic-euclidean").click(function() {
-      $("#overlay-change-heuristic").hide();    
-      $("#overlay").hide();
-    });
-    
-    $(".close-overlay").click(function() {
-      $("#overlay").hide();
-    });
-    
-  });
-</script>
+  <%= stylesheets "sidebar", "content" %>
+  <%= javascripts "ui", "raphael", "kiwi", "kiwi/bheap", "kiwi/graph", "kiwi/node", "kiwi/edge" %>
   
 <% end %>
 
-<div id="graph-container">
-  
-  <div id="cpanel" class="cpanel grid_3">
-    <h3 class="console_header">Console</h3>
-    <div id="meta">
-      <p>Graph metadata and other resources will be displayed here.
-      
-      </p>
-    </div>
-    
-    <div class="controls">
-    <h3>Controls</h3>
-      <ul>
-        <li><a id="generate-graph">Generate Graph</a></li>
-        <li><a class="disabled" id="toggle-weights">Toggle Edge Weights</a></li>
-        <li><a class="disabled" id="replay-path">Replay Path</a></li>
-        <li><a class="disabled" id="choose-heuristic">Choose Heuristic Function</a></li>
-      </ul>
-    </div>
-
-  </div>
-  
-  <div id="graph" class="grid_14">
-    <p id="about">
-      Scarab is a simulator for the A* search algorithm which is very popular for its
-      use in pathfinding.
-      <br /><br />
-      Using this tool you can generate graphs, which are a prime application for A*, where
-      you can select a destination node. When you do, Scarab will highlight the most efficient path
-      from the root to that given node in beautiful HTML5 goodness.
-      <br /><br />
-      This project was developed for the Artificial Intelligence course I'm enrolled in, I
-      thought it'd be interesting to try such a thing out with JavaScript, HTML5, and a bit
-      of Ruby.
-    </p>
-    <div id="tooltips">
-      <div id="tooltip-loading" class="hidden">
-        <p>Processing might take some time, and there's nothing to be alarmed of if you notice CPU usage rising up in the meantime.</p>
-      </div>
-      <div id="tooltip-welcome" class="hidden">
-        <h1>Use the button to the left to generate a graph and begin.</h1>
-      </div>
-      <div id="tooltip-dynamic" class="hidden">
-      </div>
-      <span class="close-tooltip">[ hide ]</span>
-    </div>
-    <div id="overlay" class="hidden">
-      <div id="overlay-change-heuristic">
-        <h1 style="text-align: center">Available heuristic methods</h1>
-        <input type="button" class="button" id="heuristic-manhattan" value="Manhattan's Distance" />
-        <input type="button" class="button" id="heuristic-euclidean" value="Euclidean Distance" />
-        <p>
-          The method performed to calculate the heuristic of a node during pathfinding 
-          plays a critical role 
-          in the efficiency and accuracy of the search. Furthermore, the admissibility
-          of the method could even affect whether a path is to be found or not.
-        </p>
-        <p>Formulaes:
-          <ul>
-            <li>Manhattan's: 
-              <span class="formulae">
-                H = |root.x-goal.x| + |root.y-goal.y|
-              </span>
-            </li>
-            <li>Euclidean:
-              <span class="formulae">
-                H = √[(root.x - goal.x)^2 + (root.y - goal.y)^2]
-              </span>
-            </li>
-          </ul>
-        </p>
-        <span class="close-overlay">[ close ]</span>
-      </div>
-    </div>
-    <div id="loader">
-      <span class="loading">..GENERATING..</span>
-    </div>
-    <div id="canvas" ></div>
-  </div>
+<div id="sidebar" class="sidebar">
+  <%= partial("_sidebar") %>
 </div>
 
+<div id="page">
+  <p id="about">
+    Scarab is a simulator for the A* search algorithm which is very popular for its
+    use in pathfinding.
+    <br /><br />
+    Using this tool you can generate graphs, which are a prime application for A*, where
+    you can select a destination node. When you do, Scarab will highlight the most efficient path
+    from the root to that given node in beautiful HTML5 goodness.
+    <br /><br />
+    This project was developed for the Artificial Intelligence course I'm enrolled in, I
+    thought it'd be interesting to try such a thing out with JavaScript, HTML5, and a bit
+    of Ruby.
+  </p>
+  
+  <!-- tooltips -->
+  <div id="tooltips">
+    <%= partial("_tooltips") %>
+    <span class="close-tooltip">[ hide ]</span>
+  </div>
+  
+  <!-- overlay page -->
+  <div id="overlay" class="hidden">
+    <%= partial("_overlays") %>
+  </div>
+  
+  <!-- loader -->
+  <div id="loader">
+    <span class="loading">..GENERATING..</span>
+  </div>
+  
+  <!-- drawing canvas -->
+  <div id="canvas"></div>
+  
+</div>
