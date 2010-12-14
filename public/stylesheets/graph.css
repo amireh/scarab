@@ -1,5 +1,13 @@
+#about {
+  color: #eee;
+  padding: 0 0 0 10px;
+  width: 220px;
+  text-align: justify;
+}
+
 #loader,
-#overlay {
+#overlay,
+#tooltips {
   position: relative;
   height: 0;
   width: 0;
@@ -9,8 +17,8 @@
 
 .loading {
   position: relative;
-  top: 300px;
-  left: 270px;
+  top: 310px;
+  left: 300px;
   font-weight: bold;
   font-size: 2em;
   color: #eee;
@@ -28,7 +36,29 @@
   padding: 20px 40px;
 }
 
-.welcome{
+#tooltips {
+  position: absolute;
+  width: 740px;
+  height: 80px;
+  background: #eee;
+  color: #333;
+  opacity: 0.9;
+  top: 70px;
+  padding: 20px 40px;
+}
+
+#tooltip-welcome h1 {
+  margin:0;
+  padding:0;
+
+}
+.close-tooltip {
+  float: right;
+  font-weight: bold;
+  color: #a60000;
+  cursor: pointer;
+}
+.welcome {
   position: relative;
   top: 73px;
   left: 0;
@@ -70,6 +100,8 @@
   color: #eee;
   margin-left: 15px;
   cursor: pointer;
+  display: block;
+  padding: 3px 0 0 0;
 }
 
 .controls ul li a:hover {
@@ -177,7 +209,6 @@
   */
   color: #eee;
   padding: 0 15px;
-  margin-bottom: 10px;
   text-align: justify;
   font-size: 13px;
   min-height: 20px;
@@ -186,6 +217,7 @@
 #meta p,
 .console p {
   padding: 0;
+  line-height: 2em;
 }
 #meta p span {
   font-size: 2em;

@@ -8,7 +8,8 @@
   function print_graph(graph) {
     
     Pixy.Kiwi.cleanup();
-
+    $("#canvas").show();
+    
     $("#loader .loading").html("..VISUALIZING..");
         
     $("#meta").empty();
@@ -18,20 +19,32 @@
       
     Pixy.Kiwi.visualize(graph, function() {
       $("#loader .loading").hide();
+      $("#tooltip-loading").hide();
+      $("#tooltips").hide();
+      
       $("#canvas").css("background-image", "none");
 
       $("#toggle-weights").removeClass("disabled");
       $("#choose-heuristic").removeClass("disabled");
+      
 
     });
     
   };
+  
+  function show_tooltip(msg) {
+    $("#tooltips").show();
+    $("#tooltip-dynamic").html(msg);
+  }
   
   $(function() {
     
     Pixy.Kiwi.setup();   
     //$("#loader").hide();
     $("#overlay").hide();
+    
+    $("#tooltip-welcome").show();
+    
     $("#generate-graph").click(function() {
 
       $.ajax({
@@ -40,7 +53,11 @@
         url: "/graph.json",
         beforeSend: function() {
           Pixy.Kiwi.cleanup();
-          $("#loader .welcome").hide();
+          $("#about").hide();
+          $("#tooltips").show();
+          $("#tooltip-welcome").hide();
+          $("#tooltip-loading").show();
+          $("#canvas").show();
           $("#canvas").css("background", "url('/images/loaders/8.gif') #111 no-repeat center center");
           $("#loader .loading").show();
         },
@@ -77,6 +94,16 @@
       $("#overlay-change-heuristic").show();
     });
     
+    $("#header h1").click(function() {
+      Pixy.Kiwi.cleanup();
+      $("#canvas").hide();
+      
+      $("#about").show();
+    });
+    
+    $(".close-tooltip").click(function() {
+      $("#tooltips").hide();
+    });
   });
 </script>
   
@@ -105,6 +132,29 @@
   </div>
   
   <div id="graph" class="grid_14">
+    <p id="about">
+      Scarab is a simulator for the A* search algorithm which is very popular for its
+      use in pathfinding.
+      <br /><br />
+      Using this tool you can generate graphs, which are a prime application for A*, where
+      you can select a destination node. When you do, Scarab will highlight the most efficient path
+      from the root to that given node in beautiful HTML5 goodness.
+      <br /><br />
+      This project was developed for the Artificial Intelligence course I'm enrolled in, I
+      thought it'd be interesting to try such a thing out with JavaScript, HTML5, and a bit
+      of Ruby.
+    </p>
+    <div id="tooltips">
+      <div id="tooltip-loading" class="hidden">
+        <p>Processing might take some time, and there's nothing to be alarmed of if you notice CPU usage rising up in the meantime.</p>
+      </div>
+      <div id="tooltip-welcome" class="hidden">
+        <h1>Use the button to the left to generate a graph and begin.</h1>
+      </div>
+      <div id="tooltip-dynamic" class="hidden">
+      </div>
+      <span class="close-tooltip">[ hide ]</span>
+    </div>
     <div id="overlay" class="hidden">
       <div id="overlay-change-heuristic">
         <h1 style="text-align: center">Available heuristic methods</h1>
@@ -134,7 +184,6 @@
     </div>
     <div id="loader">
       <span class="loading">..GENERATING..</span>
-      <span class="welcome">Use the button to the left to generate<br /> a graph and begin.</span>
     </div>
     <div id="canvas" ></div>
   </div>

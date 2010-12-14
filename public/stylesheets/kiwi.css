@@ -1,5 +1,5 @@
 body, p, ul, li, input {
-  font-family: verdana, 'Lucida Grande', helvetica, verdana, arial, sans-serif;
+  font-family: "SansationRegular", verdana, 'Lucida Grande', helvetica, verdana, arial, sans-serif;
 }
 
 body {
@@ -8,6 +8,11 @@ body {
 }
 a {
   color: #a60000;
+}
+
+h1,h2,h3 {
+  font-family: "JUICERegular";
+
 }
 
 .container {
@@ -21,16 +26,25 @@ a {
   margin-right: auto;
 }
 
+.header h1 {
+  font-size: 3em;
+  line-height: 0.5em;
+  margin-bottom: 20px;
+  letter-spacing: 6px;
+  cursor: pointer;
+  float: left;
+}
+.header h1 span {
+  letter-spacing: 0;
+}
 .footer {
   -moz-border-radius: 5px;
   border-radius: 5px;  
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
   width: 1060px;
-  height: 25px;
   clear: both;
   padding: 0 10px;
-  padding-top: 2px;
   text-align: center;
   margin-top: 10px;
   float: left;
@@ -38,6 +52,10 @@ a {
 
 .footer span {
   font-size: 12px;
+  margin: 0;
+  padding: 5px 0;
+  display: block;
+  letter-spacing: 1px;
 }
 
 .header span {
