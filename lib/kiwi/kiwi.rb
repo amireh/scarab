@@ -91,21 +91,28 @@ module Pixy
     
     def to_json
       json = { 
-        :meta => {
-          :root => @root.name,          
-          :levels => @levels + 1,
-          :nr_nodes => @nodes.length,
-          :nr_edges => @edges.length
-        },
-        :levels => {},
-        :nodes => {},
-        :edges => {}
+        :meta => [
+          @levels + 1,
+          @nodes.length,
+          @edges.length
+        ],
+        :levels => [],
+        :nodes => [],
+        :edges => []
       }
       
-      @nodes.each { |node| json[:nodes][node.name] = node.to_json }
-      @edges.each { |edge| json[:edges][edge.index] = edge.to_json }
+      #@nodes.each { |node| json[:nodes][node.name] = node.to_json }
+      @nodes.each { |node|
+        json[:nodes][node.level] ||= []
+        json[:nodes][node.level][node.index] = node.to_json
+      }
+      @edges.each { |edge| json[:edges].push edge.to_json }
       for i in 0..@levels do
-        json[:levels][i] = nodes_in_level(i).count
+        #json[:nodes][i] ||= []
+        #nodes = nodes_in_level(i)
+        #nodes.each { |node| json[:nodes][i][node.index] = node.to_json }
+        
+        json[:levels].push( nodes_in_level(i).count )
       end
       
       json
@@ -145,7 +152,7 @@ module Pixy
     end
     
     def to_json
-      { :level => @level, :val => @val }
+      @val.to_i
     end
     
   end
@@ -165,7 +172,7 @@ module Pixy
     end
     
     def to_json
-      { :head => @head.name, :tail => @tail.name, :weight => @weight, :directed => @directed }
+      [ [@head.level, @head.index], [@tail.level, @tail.index], @weight ]
     end
     
   end

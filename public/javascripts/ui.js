@@ -6,9 +6,9 @@ function print_graph(graph) {
   $("#loader .loading").html("..VISUALIZING..");
       
   $("#meta").empty();
-  $("#meta").html("<p>there are <span>" + graph.meta.nr_nodes + "</span> nodes connected by "
-    + "<span>" + graph.meta.nr_edges + "</span> edges across <span>"
-    + graph.meta.levels + "</span> levels</p>");
+  $("#meta").html("<p>there are <span>" + graph.meta[1] + "</span> nodes connected by "
+    + "<span>" + graph.meta[2] + "</span> edges across <span>"
+    + graph.meta[0] + "</span> levels</p>");
     
   Scarab.visualize(graph, function() {
     $("#loader .loading").hide();

@@ -46,9 +46,9 @@ Scarab = function() {
       this.graph = new Graph();
       
       // parse metadata
-      Meta.Count.Levels = data.meta.levels;
-      Meta.Count.Nodes = data.meta.nr_nodes;
-      Meta.Count.Edges = data.meta.nr_edges;
+      Meta.Count.Levels = data.meta[0];
+      Meta.Count.Nodes = data.meta[1];
+      Meta.Count.Edges = data.meta[2];
 
       this.graph.populate(data.meta.root, data.nodes, data.edges, data.levels);
 
