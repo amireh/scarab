@@ -56,14 +56,23 @@
     });
     
     $("#toggle-weights").click(function() {
+      if ($(this).hasClass("disabled"))
+        return false;
+
       Pixy.Kiwi.toggle_weights();
     });
     
     $("#replay-path").click(function() {
+      if ($(this).hasClass("disabled"))
+        return false;
+        
       Pixy.Kiwi.graph.highlight_path();
     });
     
     $("#choose-heuristic").click(function() {
+      if ($(this).hasClass("disabled"))
+        return false;
+        
       $("#overlay").toggle();
       $("#overlay-change-heuristic").show();
     });
