@@ -104,6 +104,21 @@
     $(".close-tooltip").click(function() {
       $("#tooltips").hide();
     });
+    
+    $("#heuristic-manhattan").click(function() {
+      $("#overlay-change-heuristic").hide();    
+      $("#overlay").hide();
+    });
+    
+    $("#heuristic-euclidean").click(function() {
+      $("#overlay-change-heuristic").hide();    
+      $("#overlay").hide();
+    });
+    
+    $(".close-overlay").click(function() {
+      $("#overlay").hide();
+    });
+    
   });
 </script>
   
@@ -121,12 +136,12 @@
     
     <div class="controls">
     <h3>Controls</h3>
-    <ul>
-      <li><a id="generate-graph">Generate Graph</a></li>
-      <li><a class="disabled" id="toggle-weights">Toggle Edge Weights</a></li>
-      <li><a class="disabled" id="replay-path">Replay Path</a></li>
-      <li><a class="disabled" id="choose-heuristic">Choose Heuristic Function</a></li>
-    </ul>
+      <ul>
+        <li><a id="generate-graph">Generate Graph</a></li>
+        <li><a class="disabled" id="toggle-weights">Toggle Edge Weights</a></li>
+        <li><a class="disabled" id="replay-path">Replay Path</a></li>
+        <li><a class="disabled" id="choose-heuristic">Choose Heuristic Function</a></li>
+      </ul>
     </div>
 
   </div>
@@ -180,6 +195,7 @@
             </li>
           </ul>
         </p>
+        <span class="close-overlay">[ close ]</span>
       </div>
     </div>
     <div id="loader">

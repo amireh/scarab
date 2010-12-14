@@ -53,7 +53,8 @@
   padding:0;
 
 }
-.close-tooltip {
+.close-tooltip,
+.close-overlay {
   float: right;
   font-weight: bold;
   color: #a60000;
