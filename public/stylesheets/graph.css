@@ -4,6 +4,7 @@
   width: 220px;
   text-align: left;
   letter-spacing: 0.4px;
+  position: absolute;
 }
 
 #loader,
