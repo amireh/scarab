@@ -43,7 +43,7 @@ Pixy.Kiwi = function() {
 			
     },
     
-    visualize: function(data) {
+    visualize: function(data, callback) {
       this.graph = new Pixy.Graph();
       graph = this.graph;
       
@@ -53,6 +53,8 @@ Pixy.Kiwi = function() {
       Pixy.Meta.Count.Edges = data.meta.nr_edges;
 
       graph.populate(data.meta.root, data.nodes, data.edges, data.levels);
+      console.log("here");
+      callback();
     },
     
     toggle_weights: function() {

@@ -19,9 +19,19 @@ Pixy.Edge = function() {
     this.label.show();
   },
   
-  highlight_path: function() {
-    this.line.attr({ stroke: "red", "stroke-width": "2px" });
-    this.path_highlighted = true;
+  highlight_path: function(list, index) {
+    var self = this;
+
+    this.path_highlighted = false;
+    this.dehighlight();
+    
+    this.line.animate({ stroke: "red", "stroke-width": "2px"}, 250, "bounce", function() {
+      self.path_highlighted = true;
+      if (index+1 != list.length)
+        return list[index+1].highlight_path(list, index+1);
+      else
+        return true;
+    });
   },
   
   dehighlight: function() {
@@ -37,7 +47,6 @@ Pixy.Edge = function() {
     this.tail = in_tail;
     this.weight = in_weight;
     
-	
     this.find_position();
     this.line = Pixy.canvas.path("M" + this.orig.x + " " + this.orig.y + "L" + this.dest.x + " " + this.dest.y);
     this.line.attr(this.style);
@@ -63,7 +72,8 @@ Pixy.Edge = function() {
   style: { stroke:"#FFFFFF", "stroke-width": "0.5px" },
   index: 0,
   label: null,
-  path_highlighted: false
+  path_highlighted: false,
+  runner: null
   }
 };
 

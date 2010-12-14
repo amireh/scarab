@@ -87,17 +87,7 @@ Pixy.Node = function() {
         */
         ///console.log("Asking for path from " + self.index);
         var nodes = Pixy.Kiwi.graph.search(null, self, null);
-        if (nodes.length != 0) {
-          $.each(nodes, function(id, node) {
-            // find the edge that connects this node with its parent
-            var edge = Pixy.Kiwi.graph.connection(node, node.parent);
-            edge.highlight_path();
-
-          });
-          
-          self.highlight_goal();
-          self.sprite.attr({ fill: "green" });
-        }
+        Pixy.Kiwi.graph.highlight_path();
         
         return false;
       });

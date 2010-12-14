@@ -8,21 +8,23 @@
   function print_graph(graph) {
     
     Pixy.Kiwi.cleanup();
-    
+
+    $("#loader .loading").html("..VISUALIZING..");
+        
     $("#meta").empty();
     $("#meta").html("<p>there are <span>" + graph.meta.nr_nodes + "</span> nodes connected by "
       + "<span>" + graph.meta.nr_edges + "</span> edges across <span>"
       + graph.meta.levels + "</span> levels</p>");
-    /*
-    $("#meta ul").append("<li>" + graph.meta.nr_nodes + " nodes</li>");
-    $("#meta ul").append("<li>" + graph.meta.nr_edges + " edges</li>"); 
-    $("#meta ul").append("<li>" + graph.meta.levels + " levels</li>");
-    */
-    Pixy.Kiwi.visualize(graph)
-    
-    $("#loader .loading").hide();
-    $("#canvas").css("background-image", "none");
+      
+    Pixy.Kiwi.visualize(graph, function() {
+      $("#loader .loading").hide();
+      $("#canvas").css("background-image", "none");
 
+      $("#toggle-weights").removeClass("disabled");
+      $("#choose-heuristic").removeClass("disabled");
+
+    });
+    
   };
   
   $(function() {
@@ -55,6 +57,11 @@
     $("#toggle-weights").click(function() {
       Pixy.Kiwi.toggle_weights();
     });
+    
+    $("#replay-path").click(function() {
+      Pixy.Kiwi.graph.highlight_path();
+    });
+    
   });
 </script>
   
@@ -72,12 +79,15 @@
     <p>Graph metadata and other resources will be displayed here.</p>
     </div>
     
+    <div class="controls">
     <h3>Controls</h3>
     <ul>
-      <li><input type="button" id="generate-graph" value="Generate Graph" /></li>
-      <li><input type="button" id="toggle-weights" value="Toggle Edge Weights" /></li>
-      <li><input type="button" id="replay-path" disabled="disabled" value="Replay Path" /></li>      
+      <li><a id="generate-graph">Generate Graph</a></li>
+      <li><a class="disabled" id="toggle-weights">Toggle Edge Weights</a></li>
+      <li><a class="disabled" id="replay-path">Replay Path</a></li>
+      <li><a class="disabled" id="choose-heuristic">Choose Heuristic Function</a></li>
     </ul>
+    </div>
 
   </div>
   

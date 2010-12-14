@@ -3,6 +3,7 @@ Pixy.Graph = function() {
   var nodes = {};
   var edges = {};
   var levels = {};
+  var self = this;
   
   var step = { x: 0, y: 0 };
   
@@ -48,6 +49,7 @@ Pixy.Graph = function() {
     edges: edges,
     levels: levels,
     root: null,
+    last_path: null,
     
     populate: function(in_root, in_nodes, in_edges, in_levels) {
       this.root = in_root;
@@ -68,6 +70,8 @@ Pixy.Graph = function() {
       highlight_root(this.root);
       this.root = nodes[in_root];
       console.log("Root is: " + this.root.index);
+      
+      $("#meta p").append("<br />heuristic function used: <span>MANHATTAN's</span>");
     },
     
     find_edges: function(node) {
@@ -104,6 +108,33 @@ Pixy.Graph = function() {
       return null;
     },
     
+    highlight_path: function() {
+      if (!this.last_path) {
+        console.log("ERROR! There's no path to highlight.");
+        return;
+      }
+      
+      $("#replay-path").removeClass("disabled");
+      
+      path = this.last_path;
+      self = this;
+      var _edges = [];
+      if (path.length != 0) {
+        $.each(path, function(id, node) {
+          // find the edge that connects this node with its parent
+          //var edge = self.connection(node, node.parent);
+          _edges.push(self.connection(node, node.parent));
+          //edge.highlight_path();
+
+        });
+        
+        //nodes[nodes.length-1].highlight_goal();
+        //nodes[nodes.length-1].sprite.attr({ fill: "green" });
+      }
+      console.log("Highlighting path");
+      _edges[0].highlight_path(_edges, 0);
+    
+    },
     manhattan: function(pos0, pos1) {
     	// See list of heuristics: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 
@@ -205,8 +236,9 @@ Pixy.Graph = function() {
 				    ret.push(curr);
 				    curr = curr.parent;
 			    }
-			    console.log(ret.reverse());
-			    return ret.reverse();
+			    this.last_path = ret.reverse();
+			    console.log(this.last_path);
+			    return this.last_path;
       } else {
         // we didn't find a path
         console.log("path not found");
