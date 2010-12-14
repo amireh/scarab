@@ -4,9 +4,41 @@ body, p, ul, li, input {
 
 body {
   background: url("/images/bg.png") repeat;
+  color: #333;
+}
+a {
+  color: #a60000;
 }
 
 .container {
   /*margin-right: 0;*/
 }
 
+.content,
+.header {
+  width: 1090px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer {
+  -moz-border-radius: 10px;
+  border-radius: 5px;  
+  -moz-box-shadow:0 0 10px 1px #999999;
+  -webkit-box-shadow:0 0 10px 1px #999999;
+  width: 1060px;
+  height: 25px;
+  clear: both;
+  padding: 0 10px;
+  padding-top: 2px;
+  text-align: center;
+}
+
+.footer span {
+  font-size: 12px;
+}
+
+.header span {
+  font-size: 16px;
+  font-style: italic;
+}

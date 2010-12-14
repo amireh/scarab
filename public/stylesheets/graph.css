@@ -28,11 +28,12 @@
   text-align: center;
   background: #eee;
   padding: 10px 0;
+  opacity: 0.8;
 }
 
 #cpanel input {
   clear: both;
-  -moz-border-radius: 10px;
+  -moz-border-radius: 5px;
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 10px;
@@ -41,23 +42,36 @@
   border: 2px solid orange; /*#ffaa00;*/
   cursor: pointer;
   width: 92%;
+  font-size: 13px;
 }
 #cpanel input:hover {
   background: orange;
-  
 }
 
+#cpanel input:disabled {
+  border-color: #eee;
+  cursor: default;
+}
+#cpanel input:disabled:hover {
+  background: #000;
+}
+
+.console_header {
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-topleft: 8px;
+  
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
 #graph {
 
-  width: 1090px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 #canvas {
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
-  background: #111 no-repeat center center;
+  background: #111 no-repeat center right;
+  background-image: url("/images/ai_gs.png");
   display: block;
   margin-bottom: 10px;
   color: #fff;
@@ -119,7 +133,7 @@
   color: #eee;
   padding: 0 15px;
   margin-bottom: 10px;
-  text-align: left;
+  text-align: justify;
   font-size: 13px;
   min-height: 20px;
   min-width: 180px;
@@ -153,4 +167,26 @@ background: -moz-linear-gradient(
   margin-top: 10px;
   color: #eee;
   display: block;
+}
+
+#cpanel .tabs {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 240px;
+  border-radius: 5px;
+}
+
+#cpanel .tabs li {
+  float: left;
+
+  background: #eee;
+  color: #333;
+  padding: 5px 5px;
+  width: 110px;
+  text-align: center;
+}
+#cpanel .tabs li.selected {
+  background: #111;
+  color: #eee;
 }
