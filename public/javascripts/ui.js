@@ -1,6 +1,6 @@
 function print_graph(graph) {
   
-  Pixy.Kiwi.cleanup();
+  Scarab.cleanup();
   $("#canvas").show();
   
   $("#loader .loading").html("..VISUALIZING..");
@@ -10,7 +10,7 @@ function print_graph(graph) {
     + "<span>" + graph.meta.nr_edges + "</span> edges across <span>"
     + graph.meta.levels + "</span> levels</p>");
     
-  Pixy.Kiwi.visualize(graph, function() {
+  Scarab.visualize(graph, function() {
     $("#loader .loading").hide();
     $("#tooltip-loading").hide();
     $("#tooltips").hide();
@@ -30,10 +30,15 @@ function show_tooltip(msg) {
 
 $(function() {
   
-  Pixy.Kiwi.setup();   
+ 
+  Scarab.setup();   
   //$("#loader").hide();
   $("#overlay").hide();
   
+  var welcome_closed = false;
+  var loading_closed = false;
+  
+  $("#tooltip-loading").addClass("hidden");
   $("#tooltip-welcome").show();
   
   $("#generate-graph").click(function() {
@@ -43,11 +48,13 @@ $(function() {
       dataType: 'json',
       url: "/graph.json",
       beforeSend: function() {
-        Pixy.Kiwi.cleanup();
+        Scarab.cleanup();
         $("#about").hide();
-        $("#tooltips").show();
         $("#tooltip-welcome").hide();
-        $("#tooltip-loading").show();
+        if (!loading_closed) {
+          $("#tooltip-loading").show();
+          $("#tooltips").show();          
+        }
         $("#canvas").show();
         $("#canvas").css("background", "url('/images/loader.gif') #111 no-repeat center center");
         $("#loader .loading").show();
@@ -67,14 +74,14 @@ $(function() {
     if ($(this).hasClass("disabled"))
       return false;
 
-    Pixy.Kiwi.toggle_weights();
+    Scarab.toggle_weights();
   });
   
   $("#replay-path").click(function() {
     if ($(this).hasClass("disabled"))
       return false;
       
-    Pixy.Kiwi.graph.highlight_path();
+    Scarab.graph.highlight_path();
   });
   
   $("#choose-heuristic").click(function() {
@@ -86,23 +93,33 @@ $(function() {
   });
   
   $("#header h1").click(function() {
-    Pixy.Kiwi.cleanup();
+    Scarab.cleanup();
     $("#canvas").hide();
     
     $("#about").show();
   });
   
   $(".close-tooltip").click(function() {
+    if ($("#tooltip-welcome").hasClass("hidden")) {
+      loading_closed = true;
+      $("#tooltip-loading").addClass("hidden");
+    } else {
+      welcome_closed = true;
+      $("#tooltip-welcome").addClass("hidden");
+    }
+    
     $("#tooltips").hide();
   });
   
   $("#heuristic-manhattan").click(function() {
+    Scarab.graph.set_heuristic("manhattan");
     $("#overlay-change-heuristic").hide();    
     $("#overlay").hide();
   });
   
   $("#heuristic-euclidean").click(function() {
-    $("#overlay-change-heuristic").hide();    
+    Scarab.graph.set_heuristic("euclidean");
+    $("#overlay-change-heuristic").hide();
     $("#overlay").hide();
   });
   
