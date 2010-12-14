@@ -27,32 +27,10 @@
   
   $(function() {
     
-    Pixy.Kiwi.setup();
-/*
-    Pixy.Kiwi.on_node_click(function(id, level, val) {
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: "/path",
-        data: { "id": id, "level": level, "val": val },
-        success: function(data) {
-        }
-      });
-    });
-*/
-    
-    var graph = "fack";
-    
-    
-    
+    Pixy.Kiwi.setup();   
     
     $("#generate-graph").click(function() {
-/*
-      $.getJSON("/graph.json", function(data) {
-        graph = data;
-        print_graph(graph);
-      });
-*/
+
       $.ajax({
         type: "GET",
         dataType: 'json',
