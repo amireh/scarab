@@ -39,7 +39,8 @@ Pixy.Node = function() {
     },
     
     highlight: function() {
-      this.sprite.attr({ fill: "orange" });
+      //this.sprite.attr({ fill: "orange" });
+      this.sprite.attr(this.style_hover);
       highlight_edges(self.index);    
     },
     
@@ -94,8 +95,8 @@ Pixy.Node = function() {
           
     },
     highlight_root: function() {
-			this.style.fill = "#a60000";
-			this.style.stroke = "#aaa";
+			this.style = this.style_root;
+
 			this.sprite.attr(this.style);
     },
     
@@ -128,7 +129,9 @@ Pixy.Node = function() {
 	  level: null,
 	  val: null,
 	  style: { fill: "#000", stroke: "orange", "stroke-width": "2px", cursor: "pointer" },
-	  style_goal: { fill: "green" },
+	  style_hover: { fill: "orange" },
+	  style_root: { fill: "#a60000" },
+	  style_goal: { fill: "#0b7000" },
 	  edges: edges,
 	  
 	  closed: false,
@@ -137,7 +140,8 @@ Pixy.Node = function() {
 	  g: 0,
 	  h: 0,
 	  parent: null,
-	  goal: false
+	  goal: false,
+	  to_be_highlighted: false
   }  
 };
 

@@ -164,6 +164,7 @@ Pixy.Graph = function() {
         node.closed = false;
         node.parent = null;
         node.goal = false;
+        node.to_be_highlighted = false;
         node.dehighlight();
       });
       
@@ -252,7 +253,8 @@ Pixy.Graph = function() {
       if (openHeap.size() != 0) {
         // we found a path, trace it
         console.log("path found");
-          goal.goal = true;
+          //goal.goal = true;
+          goal.to_be_highlighted = true;
 			    var curr = current;
 			    var ret = [];
 			    while(curr.parent) {

@@ -29,8 +29,12 @@ Pixy.Edge = function() {
       self.path_highlighted = true;
       if (index+1 != list.length)
         return list[index+1].highlight_path(list, index+1);
-      else
+      else {
+        var goal = list[index].head.to_be_highlighted ? list[index].head : list[index].tail;
+        goal.goal = true;
+        goal.dehighlight();
         return true;
+      }
     });
   },
   
