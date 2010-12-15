@@ -22,5 +22,40 @@
       </li>
     </ul>
   </p>
-  <span class="close-overlay">[ close ]</span>
+</div>
+
+<div id="overlay-graph-help">
+  <h2>How to use the graph</h2>
+  <p>The graph represents a collection of nodes connected by edges, each of which is attributed with a certain cost (aka weight). By clicking on any node, Scarab will attempt to find the <i>shortest path to that node</i>. If a path to that node exists from the Root (the red node), it will highlight the path for you.
+  </p>
+  <p>During the search, Scarab will run over nodes that may not be candidates for the best path, and these will be highlighted in gray. These nodes are said to be <i>visited</i>.
+  </p>
+  <p>There are a few heuristic functions that can selected to be used in the search. Each function has its usage cases, depending on the graph structure, hence there's no *best* one per se. You may select the function by clicking the respective button in the controls bar, Choose Heuristic Function.
+  </p>
+  <h2>Notes</h2>
+  <p>
+    <ul>
+      <li>if the graph seems to be slow and sluggish, try turning off animations or node inspection from the controls bar</li>
+      <li>for an optimal experience, please consider using a WebKit rendering browser such as Google Chromium or Safari</li>
+            
+    </ul>
+  </p>
+</div>
+
+<div id="overlay-stuff">
+  <h1>References</h1>
+  <p>I've summed up the best resources I've come across while building this application in the following list. I dearly recommend checking out Amit's resources on game programming, they're ridiculously useful.
+  <ol>
+    <li><a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">Amit on heuristics</a></li>
+    <li><a href="http://www.heyes-jones.com/astar.html">Heyes-Jones on A*</a></li>
+    <li><a href="http://www.policyalmanac.org/games/aStarTutorial.htm">A* Pathfinding for Beginners</a></li>
+    <li><a href="http://wiki.gamegardens.com/Path_Finding_Tutorial">GameGarden's pathfinding tutorial</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a></li>
+  </ol>
+    
+  <h1>Credits</h1>
+  <ul>
+    <li>Brian Grinstead: his implementation of A* in JavaScript was an inspiration and it helped me out. Here's a link to his <a href="http://www.briangrinstead.com/">blog</a></li>
+    <li>Marijn Haverbeke: I used his <a href="http://eloquentjavascript.net/appendix2.html">implementation of binary heaps</a> in JavaScript</li>
+  </ul>
 </div>

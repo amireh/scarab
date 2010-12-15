@@ -19,6 +19,9 @@ Meta = {
 };
 Scarab.Canvas = null;
 Scarab.Context = null;
+Scarab.Animated = true;
+Scarab.Inspection = true;
+Scarab.WeightsToggled = false;
 
 Scarab = function() {
 
@@ -39,14 +42,16 @@ Scarab = function() {
       
       return setTimeout(Scarab.caret_msg, 50, el, msg, i+1);
     },
-    log: function(msg, id) {
+    log: function(msg, el_class) {
+    /*
       if ($("#caret"))
-        $("#caret").remove();
+        $("#caret").remove();*/
       
-      id = (id == null) ? "" : " id='" + id + "'";
-      $("#meta ul").append("<li" + id + " ><span>scarab:~$ " + msg + "</span></li>");
-      var li = $("#meta ul li:last span:first");
+      el_class = (el_class == null) ? "" : " class='" + el_class + "'";
+      $("#meta ul").append("<li" + el_class + "><span>$. " + msg + "</span></li>");
+      //var li = $("#meta ul li:last span:first");
       
+      if ($(".console ul li").length > 20) { $(".console ul li:first").remove() };
       //this.caret_msg(li, msg, 0);
       
     },
@@ -66,7 +71,7 @@ Scarab = function() {
 			}
 			*/
 			Scarab.Canvas = Raphael(Meta.Canvas.Element, Meta.Canvas.Width, Meta.Canvas.Height);
-			$("#meta ul").append("<li>scarab:~$ waiting<span id='caret'></span></li>");
+			//$("#meta ul").append("<li>scarab:~$ waiting<span id='caret'></span></li>");
 			//setInterval(Scarab.console_caret, 500);
     },
     
@@ -78,25 +83,37 @@ Scarab = function() {
       Meta.Count.Nodes = data.meta[1];
       Meta.Count.Edges = data.meta[2];
 
+      Scarab.Animated = true; 
+      Scarab.Inspection = true;    
+      Scarab.WeightsToggled = false; 
+      
       this.graph.populate(data.meta.root, data.nodes, data.edges, data.levels);
 
       callback();
     },
     
+    toggle_inspection: function() {
+      Scarab.Inspection = !Scarab.Inspection;
+    },
+    
     toggle_weights: function() {
-      if (this.edge_weights_shown) {
+      if (Scarab.WeightsToggled) {
         $.each(this.graph.edges, function(id, edge) {
           edge.label.hide();
         });
-        this.edge_weights_shown = false;
+        Scarab.WeightsToggled = false;
       } else {
         $.each(this.graph.edges, function(id, edge) {
           edge.label.show();
         });
-        this.edge_weights_shown = true;
+        Scarab.WeightsToggled = true;
       }          
     },
-        
+    
+    toggle_animations: function() {
+      Scarab.Animated = !Scarab.Animated;
+    },
+    
     cleanup: function() {
       if (Scarab.Canvas) {
         Scarab.Canvas.clear();
@@ -104,7 +121,6 @@ Scarab = function() {
       this.graph = null;
     },
     
-    graph: null,
-    edge_weights_shown: false
+    graph: null
   }
 }();

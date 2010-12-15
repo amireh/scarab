@@ -21,7 +21,7 @@
 }
 
 #sidebar h3 {
-  color: #333;
+  color: #a60000;
   text-align: left;
   background: #eee;
   margin: 0;
@@ -30,14 +30,6 @@
   float: left;
   width: 230px;
   padding-left: 10px;
-}
-
-#sidebar .header h3 {
-  -moz-border-radius-topright: 8px;
-  -moz-border-radius-topleft: 8px;
-  
-  border-radius-topleft: 8px;
-  border-radius-topright: 8px;
 }
 
 #sidebar input {
@@ -76,13 +68,12 @@
   padding: 0 15px;
   
   color: #eee;
-  text-align: justify;
+  /*text-align: justify;*/
   font-size: 13px;
 }
 
 #sidebar .console p {
-  padding: 0;
-  line-height: 2em;
+  line-height: 1.5em;
 }
 #sidebar .console p span {
   font-size: 2em;
@@ -103,10 +94,14 @@
   font-family: "Monospace";
 }
 
-.consolie li span {
+.console li span {
   float: left;
 }
 
+
+.console li span.error {
+  color: #a60000;
+}
 #caret {
   float: right;
   height: 14px;
@@ -158,8 +153,19 @@
   text-decoration: underline;
 }
 
-.controls ul li a.disabled {
+.controls ul li.disabled {
   text-decoration: line-through;
   cursor: default;
 }
- 
+
+.console .error {
+  color: #a60000;
+}
+
+.console .inspector {
+  border-top:1px dotted #333333;
+  float:left;
+  padding-top:5px !important;
+  width:100%;
+  font-family: "Monospace";
+}

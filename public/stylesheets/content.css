@@ -7,6 +7,14 @@
   position: absolute;
 }
 
+#click-me {
+  position: absolute;
+  left: 720px;
+  width: 90px;
+  top: 490px;
+  float: none;
+}
+
 /* ------------------- *
  * OVERLAYS & TOOLTIPS *
  * ------------------- */
@@ -14,16 +22,19 @@
 #overlay,
 #tooltips {
   position: relative;
-  height: 0;
   width: 0;
   z-index: 5;
   margin: 0; padding: 0;
 }
 
+#loader {
+  height: 0;
+}
+
 #overlay {
   position: absolute;
   width: 740px;
-  height: 360px;
+  min-height: 360px;
   background: #eee;
   color: #333;
   opacity: 0.9;
@@ -34,7 +45,7 @@
 #tooltips {
   position: absolute;
   width: 740px;
-  height: 80px;
+  min-height: 80px;
   background: #eee;
   color: #333;
   opacity: 0.9;
@@ -48,12 +59,22 @@
 
 }
 .close-tooltip,
-.close-overlay {
+.close-overlay,
+.graph-help,
+#click-me {
   float: right;
   font-weight: bold;
   color: #a60000;
-  cursor: pointer;
 }
+
+.close-tooltip a:hover,
+.close-overlay a:hover,
+.graph-help a:hover,
+#click-me a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .welcome {
   position: relative;
   top: 73px;
@@ -106,8 +127,12 @@
 
   -moz-box-shadow:0 0 10px 1px #999999;
   -webkit-box-shadow:0 0 10px 1px #999999;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;  
 
   background: #111 no-repeat center right;
   background-image: url("/images/scarab.png");
@@ -115,9 +140,13 @@
 }
 
 #canvas {
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  display: block;
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;  
+
+  display: none;
  
   color: #fff;
   float: left;
@@ -125,4 +154,63 @@
   width: 820px;
   height: 540px;
   position: relative;
+}
+
+#legend {
+  position: absolute;
+  top: 517px;
+  background: #eee;
+  color: #333;
+  width: 802px;
+  height: 20px;
+  left: -1px;
+  
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;  
+
+  padding: 2px 10px;
+  overflow: hidden;
+}
+
+.graph-help {
+  position: absolute;
+  top: 20px;
+  left: 750px;
+  color: #a60000;
+}
+
+#legend span {
+  float: left;
+  margin: 0 8px;
+  font-size: 10px;
+  padding: 5px 0;
+}
+#legend span label {
+  width: 15px;
+  height: 15px;
+  border: solid 1px #000;
+  float: left;
+  margin-right: 4px;
+  position: relative;
+  top: -4px;
+  left: 0;
+}
+
+.legend-root {
+  background: #a60000;
+}
+.legend-goal {
+  background: #0b7000;
+}
+.legend-visited {
+  background: #333;
+}
+.legend-path {
+  color: #a60000;
+  text-align: center;
+  padding-top: 2px;
+  height: 13px !important;
 }

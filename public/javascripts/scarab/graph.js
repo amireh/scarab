@@ -86,7 +86,7 @@ Graph.prototype = {
     this.root.is_root = true;
     this.root.highlight_root();
     
-    $("#meta p").append("<br />heuristic function used: <span id='heuristic-used'></span>");
+    //$("#meta p").append("<br />heuristic function used: <span id='heuristic-used'></span>");
     $("#meta p").append("<br /><label id='timer'></label>");
     
     this.set_heuristic("manhattan");
@@ -108,17 +108,12 @@ Graph.prototype = {
     for (var i = 0; i < node1.edges.length; ++i) {
       edge = node1.edges[i];
       if (edge.tail == node2 || edge.head == node2) {
-        return edge;
-      }
-    }
-
-    for (i = 0; i < node2.edges.length; ++i) {
-      edge = node2.edges[i];
-      if (edge.tail == node1 || edge.head == node1) {
+        //console.log("Choosing edge with weight " + edge.weight);
         return edge;
       }
     }
     
+
     return null;
   },
 
@@ -158,8 +153,9 @@ Graph.prototype = {
       this.heuristic = this.euclidean;
       name = "EUCLIDEAN";
     }
-      
-    $("#heuristic-used").html(name);
+    
+    $("#meta .heuristic").remove();
+    Scarab.log("heuristic set to: " + name, "heuristic");
   },
 
   manhattan: function(start, end) {
@@ -180,15 +176,7 @@ Graph.prototype = {
   reset: function() {
     $.each(this.nodes, function(level, nodes) {
       $.each(nodes, function(id, node) {
-        node.f = 0;
-        node.g = 0;
-        node.h = 0;
-        node.visited = false;
-        node.closed = false;
-        node.parent = null;
-        node.goal = false;
-        node.to_be_highlighted = false;
-        node.dehighlight();
+        node.reset();
       });
     });
     
@@ -206,7 +194,7 @@ Graph.prototype = {
     start = this.root;
 
     
-	  var open = new BinaryHeap(function(node){return node.f;});
+	  var open = new BinaryHeap(function(node){ return node.f;});
 	  open.push(start);      
 
     var current = null;
@@ -223,7 +211,6 @@ Graph.prototype = {
       
       // find the node's neighbors to visit
       var neighbors = current.neighbors();
-      
       for (var i = 0, il = neighbors.length; i < il; i++) {
 	      var neighbor = neighbors[i];
 
@@ -231,13 +218,14 @@ Graph.prototype = {
 	      if(neighbor.closed) {
 		      continue;
 	      }
-
-	      var g_score = current.val + current.g + this.connection(current, neighbor).weight;
+        
+	      var g_score = current.g + this.connection(current, neighbor).weight;
 	      var been_visited = neighbor.visited;
 
 	      if(!been_visited || g_score < neighbor.g) {
 
 		      // found an optimal (so far) path to this node.. take score for node to see how good it is
+          //neighbor.highlight_visited();
 		      neighbor.visited = true;
 		      neighbor.parent = current;
 		      neighbor.h = neighbor.h || this.heuristic(neighbor.pos, goal.pos);
@@ -255,17 +243,26 @@ Graph.prototype = {
 		    } // if !visited
       } // for() neighbors
     } // while(!open.empty)
-    
-    // display time taken for the search
+
     var timer_finish = new Date();
     var time_elapsed = timer_finish.getTime() - timer_start.getTime();
-    //$("#timer").html("search took <span>" + time_elapsed + "ms</span>");
-    $("#timer").remove();
-    Scarab.log("search took " + time_elapsed + "ms", "timer");
+    
+    // highlight visited nodes
+    $.each(this.nodes, function(level, nodes) {
+      $.each(nodes, function(id, node) {
+        if (node.visited)
+          node.highlight_visited();
+      });
+    });
     
     if (open.size() != 0) {
       // we found a path, trace it
       //console.log("path found");
+      //Scarab.log("G:" + goal.g + ", H:" + goal.h + ", F:" + goal.f);
+      // display time taken for the search
+      $(".timer").remove();
+      Scarab.log("path found in [" + time_elapsed + "ms]", "timer");
+
       goal.to_be_highlighted = true;
       var curr = current;
       var ret = [];
@@ -276,10 +273,13 @@ Graph.prototype = {
       this.last_path = ret.reverse();
       this.highlight_path();
 
+      //log("Path found to " + goal);
       return true;
     } else {
       // we didn't find a path
       //console.log("path not found");
+      $(".error").remove();
+      Scarab.log("search failed; no path found", "error");
       return false;
     }
   } // Graph.search()

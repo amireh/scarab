@@ -64,7 +64,6 @@ h1,h2,h3 {
   margin: 0;
   padding: 5px 0;
   display: block;
-  letter-spacing: 1px;
 }
 
 .hidden {

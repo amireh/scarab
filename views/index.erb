@@ -21,16 +21,20 @@
     This project was developed for the Artificial Intelligence course I'm enrolled in, I
     thought it'd be interesting to try such a thing out with JavaScript, HTML5, and a bit
     of Ruby.
+    <br /><br />
+    <strong>Update</strong>: I switched from using HTML5 to an SVG library, <a href="http://raphaeljs.com/">Raphael</a>, for sanity reasons.
+    <span id="click-me">[ <a>click me</a> ]</span>
   </p>
   
   <!-- tooltips -->
   <div id="tooltips">
     <%= partial("_tooltips") %>
-    <span class="close-tooltip">[ hide ]</span>
+    <span class="close-tooltip">[ <a>hide</a> ]</span>
   </div>
   
   <!-- overlay page -->
   <div id="overlay" class="hidden">
+    <span class="close-overlay">[ <a>close</a> ]</span>  
     <%= partial("_overlays") %>
   </div>
   
@@ -40,6 +44,15 @@
   </div>
   
   <!-- drawing canvas -->
-  <div id="canvas"></div>
+  <div id="canvas">
+    <span class="graph-help hidden">[ <a>help</a> ]</span>
+    <div id="legend">
+      <span><b>Legend:</b> </span>
+      <span><label class="legend-root"></label> root node</span>
+      <span><label class="legend-goal"></label> goal node</span>
+      <span><label class="legend-visited"></label> visited nodes</span>
+      <span><label class="legend-path">---</label> shortest path to goal node</span>
+    </div>
+  </div>
   
 </div>

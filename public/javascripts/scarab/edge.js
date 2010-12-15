@@ -52,7 +52,14 @@ Edge.prototype = {
     this.pointer = Scarab.Canvas.circle(point.x, point.y, 3);
     this.pointer.attr(this.styles.pointer);
     
-    point = this.line.getPointAtLength(this.line.getTotalLength() / 2);
+    // avoid clash in edge weight positions
+    var tmp = this.line.getTotalLength();
+    if (tmp > 150)
+      tmp /= 3;
+    else if (tmp < 150)
+      tmp /= 2;
+    
+    point = this.line.getPointAtLength(tmp);
 	  this.label = Scarab.Canvas.text(point.x, point.y, this.weight);
 	  this.label.attr(this.styles.label);
     this.label.hide();
@@ -67,10 +74,12 @@ Edge.prototype = {
   },
     
   dehighlight : function() {
-      if (!this.path_highlighted)  
-        this.line.attr(this.styles.line);
-      
+    if (!Scarab.WeightsToggled)
       this.label.hide();
+
+    if (!this.path_highlighted)
+      this.line.attr(this.styles.line);
+
   },
 
   // list is an array of edges, index is the index of the
@@ -89,7 +98,7 @@ Edge.prototype = {
       else {
         var goal = list[index].head.to_be_highlighted ? list[index].head : list[index].tail;
         goal.goal = true;
-        goal.dehighlight();
+        goal.highlight_goal();
         return true;
       }
     });

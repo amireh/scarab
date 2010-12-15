@@ -82,6 +82,7 @@ BinaryHeap.prototype = {
           parent = this.content[parentN];
       // Swap the elements if the parent is greater.
       if (this.scoreFunction(element) < this.scoreFunction(parent)) {
+        log("element: " + element.f + ", parent: " + parent.f);
         this.content[parentN] = element;
         this.content[n] = parent;
         // Update 'n' to continue at the new position.

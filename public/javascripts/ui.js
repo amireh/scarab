@@ -1,3 +1,9 @@
+window.log = function(msg){
+	if(this.console){
+		console.log( arguments );
+	}
+};
+
 function print_graph(graph) {
   
   Scarab.cleanup();
@@ -24,6 +30,10 @@ function print_graph(graph) {
 
     $("#toggle-weights").removeClass("disabled");
     $("#choose-heuristic").removeClass("disabled");
+    $("#toggle-animations").removeClass("disabled");
+    $("#toggle-inspection").removeClass("disabled");
+    $("#legend").show();
+    $(".graph-help").show();
   });
   
 };
@@ -33,20 +43,30 @@ function show_tooltip(msg) {
   $("#tooltip-dynamic").html(msg);
 }
 
+function show_overlay(el_id) {
+  $("#overlay").children().each(function(id, child) { $(this).hide(); });
+  $("#overlay .close-overlay:first").show();
+  $("#" + el_id).show();
+  $("#overlay").show();
+};
+
+function hide_overlays() { $("#overlay").hide(); };
+
 $(function() {
   
  
   Scarab.setup();
-  Scarab.log("MUAHAH");  
+  Scarab.log("$c4r4b");  
   //$("#loader").hide();
   $("#overlay").hide();
+
   
   var welcome_closed = false;
   var loading_closed = false;
   
   $("#tooltip-loading").addClass("hidden");
   $("#tooltip-welcome").show();
-  
+  $("#legend").hide();
   $("#generate-graph").click(function() {
 
     $.ajax({
@@ -94,8 +114,7 @@ $(function() {
     if ($(this).hasClass("disabled"))
       return false;
       
-    $("#overlay").toggle();
-    $("#overlay-change-heuristic").show();
+    show_overlay("overlay-change-heuristic")
   });
   
   $("#header h1").click(function() {
@@ -119,18 +138,41 @@ $(function() {
   
   $("#heuristic-manhattan").click(function() {
     Scarab.graph.set_heuristic("manhattan");
-    $("#overlay-change-heuristic").hide();    
-    $("#overlay").hide();
+    hide_overlays();
   });
   
   $("#heuristic-euclidean").click(function() {
     Scarab.graph.set_heuristic("euclidean");
-    $("#overlay-change-heuristic").hide();
-    $("#overlay").hide();
+    hide_overlays();
   });
   
   $(".close-overlay").click(function() {
-    $("#overlay").hide();
+    hide_overlays();
   });
   
+  $("#toggle-animations").click(function() {
+    Scarab.toggle_animations();
+    if (Scarab.Animated)
+      $(this).find('a').html("Animations: turn OFF");
+    else
+      $(this).find('a').html("Animations: turn ON");
+    return false;
+  });
+
+  $("#toggle-inspection").click(function() {
+    Scarab.toggle_inspection();
+    if (Scarab.Inspection)
+      $(this).find('a').html("Node Inspection: turn OFF");
+    else
+      $(this).find('a').html("Node Inspection: turn ON");
+    return false;
+  });
+  
+  $(".graph-help").click(function() {
+    show_overlay("overlay-graph-help");
+  });
+  
+  $("#click-me").click(function() {
+    show_overlay("overlay-stuff");
+  });
 });
