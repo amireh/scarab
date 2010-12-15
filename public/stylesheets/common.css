@@ -83,3 +83,8 @@ h1,h2,h3 {
   background: #eee;
   color: #111;
 }
+
+#fb-like {
+  float: right;
+  margin-right: 5px;
+}
