@@ -48,31 +48,34 @@ Graph.prototype = {
 
 	find_grid_node_pos: function(id, level) {
 		var dim = Meta.Node.Dim;
-    var nr_levels = Meta.Count.Levels;
+    var nr_levels = Meta.Count.Levels+1;
     var nr_nodes = nr_levels;
     
     var pos = { x: 0, y: 0 };
     
-    var win_w = 820 - dim.w;
-    var win_h = 540 - dim.h;
+    var win_w = 820 - dim.w + (nr_levels * 10);
+    var win_h = 520 - dim.h + (nr_levels * 10);
     
     if (this.step.level != level) {
       this.step.x = parseInt( (win_w - (nr_levels * dim.w)) / nr_levels);
       this.step.y = parseInt( (win_h - (nr_nodes * dim.h)) / nr_nodes );
     }
     
+    
     pos.x = level * (dim.w + this.step.x) + this.step.x;
-    if (nr_levels >= 8)
-      pos.x += dim.w/2;
+    //if (nr_levels >= 8)
+    //  pos.x += dim.w/2;
     
     pos.y = id * (dim.h + this.step.y) + this.step.y;
+    /*
     if (nr_nodes == 4)
       pos.y += dim.h/3;
     else if (nr_nodes > 4)
       pos.y += dim.h/3;
     else {
     }
-        
+    */
+      
     return pos;
 	},
   create_node: function(level, id, val) {

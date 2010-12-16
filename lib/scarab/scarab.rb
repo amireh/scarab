@@ -31,24 +31,86 @@ module Pixy
     def connect_neighbors(node)
       edge_w = 1
       neighbors = []
-      if ((node.index == 0 or node.index == @levels) && (node.level == 0 || node.level == @levels))
+      x = node.level
+      y = node.index
+      
+      if ((y == 0 or y == @levels) && (x == 0 || x == @levels))
         # CASE 1: corner nodes have 3 neighbors
-        if (node.index == 0)
+        if (y == 0)
           # top left or right corners
-          if (node.level == 0)
-            # top left corner
-            #neighbors.push(@nodes)
-          else
-            # top right corner
+          if (x == 0) # top left corner
+            neighbors.push(@nodes[x+1][y]) unless @nodes[x+1][y].nil?
+            neighbors.push(@nodes[x+1][y+1]) unless @nodes[x+1][y+1].nil?
+            neighbors.push(@nodes[x][y+1]) unless @nodes[x][y+1].nil?
+          else # top right corner
+            neighbors.push(@nodes[x-1][y]) unless @nodes[x-1][y].nil?
+            neighbors.push(@nodes[x-1][y+1]) unless @nodes[x-1][y+1].nil?
+            neighbors.push(@nodes[x][y+1]) unless @nodes[x][y+1].nil?
           end
-        else
+        else # bottom left or right corners
+          if (x == 0) # bottom left
+            neighbors.push(@nodes[x+1][y]) unless @nodes[x+1][y].nil?
+            neighbors.push(@nodes[x+1][y-1]) unless @nodes[x+1][y-1].nil?
+            neighbors.push(@nodes[x][y-1]) unless @nodes[x][y-1].nil?            
+          else # bottom right
+            neighbors.push(@nodes[x-1][y]) unless @nodes[x-1][y].nil?
+            neighbors.push(@nodes[x-1][y-1]) unless @nodes[x-1][y-1].nil?
+            neighbors.push(@nodes[x][y-1]) unless @nodes[x][y-1].nil?          
+          end
         end
-      elsif (node.index == 0 or node.index == @levels or node.level == 0 or node.level == @levels)
+      elsif (y == 0 or y == @levels or x == 0 or x == @levels)
         # CASE 2: nodes on top, right, bottom, and left edges have 5 neighbors
+        if y == 0 # top edge
+          fact = nil
+          2.times do
+            fact = fact.nil? ? 0 : 1
+            for i in -1..1 do
+              neighbor = @nodes[x+i][y+fact]
+              neighbors.push(neighbor) unless neighbor.nil? or neighbor == node
+            end
+          end
+        elsif y == @levels # bottom edge
+          fact = nil
+          2.times do
+            fact = fact.nil? ? 0 : -1
+            for i in -1..1 do
+              neighbor = @nodes[x+i][y+fact]
+              neighbors.push(neighbor) unless neighbor.nil? or neighbor == node
+            end
+          end        
+        elsif x == 0
+          fact = nil
+          2.times do
+            fact = fact.nil? ? 0 : 1
+            for i in -1..1 do
+              neighbor = @nodes[x+fact][y+i]
+              neighbors.push(neighbor) unless neighbor.nil? or neighbor == node
+            end
+          end
+        elsif x == @levels
+          fact = nil
+          2.times do
+            fact = fact.nil? ? 0 : -1
+            for i in -1..1 do
+              neighbor = @nodes[x+fact][y+i]
+              neighbors.push(neighbor) unless neighbor.nil? or neighbor == node
+            end
+          end
+        end
       else
         # CASE 3: the rest have 8
-        
+        fact = nil
+        3.times do
+          fact = fact.nil? ? -1 : fact == -1 ? 0 : 1
+          for i in -1..1 do
+            neighbor = @nodes[x+i][y+fact]
+            neighbors.push(neighbor) unless neighbor.nil? or neighbor == node
+          end
+        end        
       end
+      
+      neighbors.each { |neighbor| connect(node, neighbor, edge_w) unless connected?(node, neighbor) }
+      neighbors
     end
     
     def connected?(node1, node2)
@@ -131,13 +193,15 @@ module Pixy
       
       #@nodes.each { |node| json[:nodes][node.name] = node.to_json }
       #puts @nodes.inspect
+      puts @nodes.length
       i = j = 0
-      for i in 0..(@nodes.length) do
-        puts @nodes[i]
-        #for j in 0..(@nodes[i].length) do
-          #json[:nodes][i] ||= []
-          #json[:nodes][i][node.index] = node.to_json        
-        #end
+      for i in 0..(@nodes.length-1) do
+        #puts @nodes[i]
+        for j in 0..(@nodes[i].length-1) do
+          node = @nodes[i][j]
+          json[:nodes][i] ||= []
+          json[:nodes][i][node.index] = node.to_json
+        end
       end
       
       @edges.each { |edge| json[:edges].push edge.to_json }
@@ -255,9 +319,7 @@ module Pixy
         end
       end
       
-      @grid.nodes.each { |node|
-          #@grid.connect_neighbors(node)
-        }
+      @grid.nodes.each { |level| level.each do |node| @grid.connect_neighbors(node) end }
 
         @grid.to_json
     end

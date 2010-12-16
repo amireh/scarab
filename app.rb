@@ -1,5 +1,5 @@
 # app.rb
-Encoding.default_internal
+Encoding.default_internal if defined?(Encoding)
 
 ENV['APP_ROOT'] ||= File.dirname(__FILE__)
 $LOAD_PATH << File.join(File.dirname(__FILE__), 'lib')
@@ -85,7 +85,7 @@ module Pixy
       content_type :json
       
       scarab = Scarab.new
-      scarab.generate_grid(9).to_json
+      scarab.generate_grid(5).to_json
     end
 
   end

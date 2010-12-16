@@ -2,8 +2,8 @@ Scarab = {};
 Meta = {
   Node: {
     Dim: { 
-      w: 24, 
-      h: 24 
+      w: 36, 
+      h: 36 
     }, 
   },
   Count: {

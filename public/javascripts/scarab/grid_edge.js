@@ -17,9 +17,7 @@ function GridEdge() {
   
   // shape styles
   this.styles = { 
-    line:   { stroke: "#FFFFFF", "stroke-width": "0.5px" },
-    label:  { fill: "#FFFFFF", font: "14px Verdana", "font-weight": "bold", cursor: "default"},
-    pointer: { fill: "#FFFFFF" }
+    line:   { stroke: "#FFFFFF", "stroke-width": "0.5px" }
   };
   
   // this is set to true when this edge is part of a path
@@ -50,34 +48,15 @@ GridEdge.prototype = {
       
     this.line.attr(this.styles.line);
 
-    var point = this.line.getPointAtLength(this.line.getTotalLength() - this.tail.dim.h / 2 - 4);
-    this.pointer = Scarab.Canvas.circle(point.x, point.y, 3);
-    this.pointer.attr(this.styles.pointer);
-    
-    // avoid clash in edge weight positions
-    var tmp = this.line.getTotalLength();
-    if (tmp > 150)
-      tmp /= 3;
-    else if (tmp < 150)
-      tmp /= 2;
-    
-    point = this.line.getPointAtLength(tmp);
-	  this.label = Scarab.Canvas.text(point.x, point.y, this.weight);
-	  this.label.attr(this.styles.label);
-    this.label.hide();
   },
 
   highlight: function() {
     if (!this.path_highlighted)
       this.line.attr({ stroke: "green", "stroke-width": "2px" });
-      
-    this.label.show();
     
   },
     
   dehighlight : function() {
-    if (!Scarab.WeightsToggled)
-      this.label.hide();
 
     if (!this.path_highlighted)
       this.line.attr(this.styles.line);

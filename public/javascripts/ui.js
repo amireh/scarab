@@ -94,7 +94,7 @@ $(function() {
 
     return false;
     
-  });
+  }).click();
   
   $("#toggle-weights").click(function() {
     if ($(this).hasClass("disabled"))
