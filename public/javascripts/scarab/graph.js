@@ -8,6 +8,7 @@ function Graph() {
   this.step = { level: -1, x: 0, y: 0 };
   this.root = null;
   this.last_path = null;
+	this.visited_counter = 0;
   this.heuristic = this.manhattan;
 
 };
@@ -19,6 +20,36 @@ Graph.prototype = {
     var dim = Meta.Node.Dim;
     var nr_levels = Meta.Count.Levels;
     var nr_nodes = this.levels[level];
+    
+    var pos = { x: 0, y: 0 };
+    
+    var win_w = 840 - dim.w;
+    var win_h = 560 - dim.h;
+    
+    if (this.step.level != level) {
+      this.step.x = parseInt( (win_w - (nr_levels * dim.w)) / nr_levels);
+      this.step.y = parseInt( (win_h - (nr_nodes * dim.h)) / nr_nodes );
+    }
+    
+    pos.x = level * (dim.w + this.step.x) + this.step.x;
+    if (nr_levels >= 8)
+      pos.x += dim.w/3;
+    
+    pos.y = id * (dim.h + this.step.y) + this.step.y;
+    if (nr_nodes == 4)
+      pos.y += dim.h/3;
+    else if (nr_nodes > 4)
+      pos.y += dim.h/2;
+    else {
+    }
+        
+    return pos;
+  },
+
+	find_grid_node_pos: function(id, level) {
+		var dim = Meta.Node.Dim;
+    var nr_levels = Meta.Count.Levels;
+    var nr_nodes = nr_levels;
     
     var pos = { x: 0, y: 0 };
     
@@ -38,24 +69,35 @@ Graph.prototype = {
     if (nr_nodes == 4)
       pos.y += dim.h/3;
     else if (nr_nodes > 4)
-      pos.y += dim.h/2;
+      pos.y += dim.h/3;
     else {
     }
         
     return pos;
-  },
-
+	},
   create_node: function(level, id, val) {
     if (!this.nodes[level])
       this.nodes[level] = [];
     
-    this.nodes[level][id] = new Node();
+		var pos_funct = null;
+		if (Scarab.GraphType == "Random") {
+			this.nodes[level][id] = new Node();
+			this.nodes[level][id].create(id, level, val, this.find_node_pos(id, level));
+		}	else {
+			this.nodes[level][id] = new GridNode();
+			this.nodes[level][id].create(id, level, val, this.find_grid_node_pos(id, level));
+		}
+			
 
-    this.nodes[level][id].create(id, level, val, this.find_node_pos(id, level));
+		
+    //this.nodes[level][id].create(id, level, val, pos_funct(id, level));
   },
 
   create_and_draw_edge: function(id, head, tail, weight) {
-    this.edges[id] = new Edge();
+		if (Scarab.GraphType == "Random")
+    	this.edges[id] = new Edge();
+    else 
+      this.edges[id] = new GridEdge();
 
     this.edges[id].create(id, this.nodes[head[0]][head[1]], this.nodes[tail[0]][tail[1]], weight);
   },
@@ -131,8 +173,11 @@ Graph.prototype = {
     if (path.length != 0) {
       $.each(path, function(id, node) {
         // find the edge that connects this node with its parent
-        //var edge = self.connection(node, node.parent);
-        _edges.push(self.connection(node, node.parent));
+        var edge = self.connection(node, node.parent);
+				edge.path_highlighted = false;
+				edge.dehighlight();
+				//edge.path_highlighted = false;
+        _edges.push(edge);
       });
       
     }
@@ -184,6 +229,8 @@ Graph.prototype = {
       edge.path_highlighted = false;
       edge.dehighlight();
     });
+
+		this.visited_counter = 0;
   },
 
   search: function(start, goal) {
@@ -226,6 +273,7 @@ Graph.prototype = {
 
 		      // found an optimal (so far) path to this node.. take score for node to see how good it is
           //neighbor.highlight_visited();
+					++this.visited_counter;
 		      neighbor.visited = true;
 		      neighbor.parent = current;
 		      neighbor.h = neighbor.h || this.heuristic(neighbor.pos, goal.pos);
@@ -254,7 +302,9 @@ Graph.prototype = {
           node.highlight_visited();
       });
     });
-    
+		
+		$(".console .visited-counter").remove();
+    Scarab.log("visited " + this.visited_counter + " nodes", "visited-counter");
     if (open.size() != 0) {
       // we found a path, trace it
       //console.log("path found");

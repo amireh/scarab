@@ -1,4 +1,4 @@
-function Edge() {
+function GridEdge() {
 
   this.self = this;
 
@@ -29,7 +29,7 @@ function Edge() {
   
 };
 
-Edge.prototype = {
+GridEdge.prototype = {
 
   create: function(in_id, in_head, in_tail, in_weight) {
     this.index = in_id;
@@ -40,10 +40,12 @@ Edge.prototype = {
     this.orig = this.head.pos;
     this.dest = this.tail.pos;
 
+		var dim = Meta.Node.Dim;
+		
     this.line = Scarab.Canvas.path("M" + 
-      this.orig.x + " " + this.orig.y + 
+      (this.orig.x + dim.w / 2) + " " + (this.orig.y + dim.h / 2) + 
       "L" + 
-      this.dest.x + " " + this.dest.y
+      (this.dest.x + dim.w / 2) + " " + (this.dest.y + dim.h / 2)
     );
       
     this.line.attr(this.styles.line);

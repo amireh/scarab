@@ -1,4 +1,5 @@
 # app.rb
+Encoding.default_internal
 
 ENV['APP_ROOT'] ||= File.dirname(__FILE__)
 $LOAD_PATH << File.join(File.dirname(__FILE__), 'lib')
@@ -10,10 +11,10 @@ require 'sinatra/base'
 require 'sinatra/content_for'
 require 'erb'
 require 'json'
-require 'kiwi/kiwi'
+require 'scarab/scarab'
 
 module Pixy
-  class KiwiApp < Sinatra::Application
+  class ScarabApp < Sinatra::Application
     include Sinatra::ContentFor
 
     # -+-+-+-+-+-+-+-+- #
@@ -83,11 +84,11 @@ module Pixy
     get '/graph.json' do      
       content_type :json
       
-      kiwi = Kiwi.new
-      kiwi.generate_graph.to_json      
+      scarab = Scarab.new
+      scarab.generate_grid(9).to_json
     end
 
   end
 end
 
-puts "Kiwi has taken to the stage!!"
+puts "Scarab has taken to the stage!!"

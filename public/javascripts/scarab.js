@@ -2,8 +2,8 @@ Scarab = {};
 Meta = {
   Node: {
     Dim: { 
-      w: 48, 
-      h: 48 
+      w: 24, 
+      h: 24 
     }, 
   },
   Count: {
@@ -17,11 +17,14 @@ Meta = {
     Height: 540
   }
 };
+
 Scarab.Canvas = null;
 Scarab.Context = null;
 Scarab.Animated = true;
 Scarab.Inspection = true;
 Scarab.WeightsToggled = false;
+
+Scarab.GraphType = "Grid";
 
 Scarab = function() {
 
@@ -67,7 +70,7 @@ Scarab = function() {
 
     		//Scarab.Context.beginPath();
 
-        console.log("Kiwi has taken to the stage!");
+        console.log("Scarab has taken to the stage!");
 			}
 			*/
 			Scarab.Canvas = Raphael(Meta.Canvas.Element, Meta.Canvas.Width, Meta.Canvas.Height);

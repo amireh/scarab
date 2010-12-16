@@ -1,7 +1,7 @@
 <% content_for :scripts do %>
 
   <%= stylesheets "sidebar", "content" %>
-  <%= javascripts "ui", "raphael", "scarab", "scarab/bheap", "scarab/graph", "scarab/node", "scarab/edge" %>
+  <%= javascripts "ui", "raphael", "scarab", "scarab/bheap", "scarab/graph", "scarab/node", "scarab/grid_node", "scarab/edge", "scarab/grid_edge" %>
   
 <% end %>
 
@@ -45,13 +45,13 @@
   
   <!-- drawing canvas -->
   <div id="canvas">
-    <span class="graph-help hidden">[ <a>help</a> ]</span>
     <div id="legend">
       <span><b>Legend:</b> </span>
       <span><label class="legend-root"></label> root node</span>
       <span><label class="legend-goal"></label> goal node</span>
       <span><label class="legend-visited"></label> visited nodes</span>
       <span><label class="legend-path">---</label> shortest path to goal node</span>
+      <span class="graph-help hidden">[ <a>help</a> ]</span>
     </div>
   </div>
   

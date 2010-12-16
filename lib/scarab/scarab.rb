@@ -16,7 +16,8 @@ module Pixy
     
     def add_node(node)
       @root = node if @root.nil?
-      @nodes.push(node)
+      @nodes[node.level] ||= []
+      @nodes[node.level][node.index] = node
       node.attach(self)
     end
     
@@ -25,6 +26,29 @@ module Pixy
       @edges.push Edge.new(@edges.length, node1, node2, weight)
       node1.connection(@edges.last)
       node2.connection(@edges.last)
+    end
+    
+    def connect_neighbors(node)
+      edge_w = 1
+      neighbors = []
+      if ((node.index == 0 or node.index == @levels) && (node.level == 0 || node.level == @levels))
+        # CASE 1: corner nodes have 3 neighbors
+        if (node.index == 0)
+          # top left or right corners
+          if (node.level == 0)
+            # top left corner
+            #neighbors.push(@nodes)
+          else
+            # top right corner
+          end
+        else
+        end
+      elsif (node.index == 0 or node.index == @levels or node.level == 0 or node.level == @levels)
+        # CASE 2: nodes on top, right, bottom, and left edges have 5 neighbors
+      else
+        # CASE 3: the rest have 8
+        
+      end
     end
     
     def connected?(node1, node2)
@@ -36,9 +60,9 @@ module Pixy
     end
     
     def nodes_in_level(level)
-      nodes = []
-      @nodes.each { |node| nodes.push node if node.level == level }
-      nodes
+      #nodes = []
+      #@nodes.each { |node| nodes.push node if node.level == level }
+      @nodes[level]
     end
     
     # find nodes that are adjacent in level AND index
@@ -49,7 +73,7 @@ module Pixy
       # puts "Checking for neighbors for #{node.level}_#{node.index}"
       neighbors = []
       if node.level != 0
-        nodes = nodes_in_level(node.level-1)
+        nodes = @nodes[node.level-1]
         # puts "There are #{nodes.length} nodes in previous level"
         range = nil
         if node.index == 0 
@@ -65,7 +89,7 @@ module Pixy
         neighbors += nodes unless nodes.empty?
       end
       if node.level != @levels
-        nodes = nodes_in_level(node.level+1)
+        nodes = @nodes[node.level+1]
         # puts "There are #{nodes.length} nodes in next level"        
         range = nil
         if node.index == 0
@@ -90,10 +114,14 @@ module Pixy
     end
     
     def to_json
+      nr_nodes = 0
+      @nodes.each { |level| nr_nodes += level.length }
+      
+      puts "Nr of nodes: #{nr_nodes}"
       json = { 
         :meta => [
           @levels + 1,
-          @nodes.length,
+          nr_nodes,
           @edges.length
         ],
         :levels => [],
@@ -102,31 +130,53 @@ module Pixy
       }
       
       #@nodes.each { |node| json[:nodes][node.name] = node.to_json }
-      @nodes.each { |node|
-        json[:nodes][node.level] ||= []
-        json[:nodes][node.level][node.index] = node.to_json
-      }
+      #puts @nodes.inspect
+      i = j = 0
+      for i in 0..(@nodes.length) do
+        puts @nodes[i]
+        #for j in 0..(@nodes[i].length) do
+          #json[:nodes][i] ||= []
+          #json[:nodes][i][node.index] = node.to_json        
+        #end
+      end
+      
       @edges.each { |edge| json[:edges].push edge.to_json }
       for i in 0..@levels do
         #json[:nodes][i] ||= []
         #nodes = nodes_in_level(i)
         #nodes.each { |node| json[:nodes][i][node.index] = node.to_json }
         
-        json[:levels].push( nodes_in_level(i).count )
+        json[:levels].push( @nodes[i].length )
       end
       
       json
     end
     
+    # attempts to find a candidate node to connect with
+    # given node based on their level:
+    #   * if the node is not connected yet, find a preferably
+    #     unconnected node in the same level or the one beyond it
+    #     # if no unconnected nodes exist: connect to a random node
+    #       in the same level or the one beyond it
+    #   * if the node is connected, find a node from a level to which
+    #     it's not yet connected
+    #
+    def find_candidate(node)
+      list = neighbors(node)
+      return nil if list.empty?
+
+      tmp = list[rand(list.length-1)]
+      return tmp
+    end
+    
   end
   
   class Node
-    attr_reader :name, :index, :level, :edges, :val, :graph
+    attr_reader :index, :level, :edges, :val, :graph
     
-    def initialize(name, index, level, val)
+    def initialize(index, level, val)
       super()
       
-      @name = name
       @level = level
       @val = val
       @index = index
@@ -148,7 +198,7 @@ module Pixy
     end
     
     def siblings
-      @graph.nodes_in_level(@level) - [self] || []
+      @graph.nodes[@level] - [self] || []
     end
     
     def to_json
@@ -177,7 +227,7 @@ module Pixy
     
   end
   
-  class Kiwi
+  class Scarab
   
     attr_reader :graph
     
@@ -195,8 +245,26 @@ module Pixy
       # puts "+ #{msg}"
     end
     
-    def generate_graph
+    def generate_grid(size)
+      @grid = Graph.new
+      @grid.levels = @levels = size
+      
+      for i in 0..@levels do
+        for j in 0..@levels do
+          @grid.add_node(Node.new(j, i, node_val))
+        end
+      end
+      
+      @grid.nodes.each { |node|
+          #@grid.connect_neighbors(node)
+        }
+
+        @grid.to_json
+    end
+    
+    def generate_graph(levels = nil)
       @graph = Graph.new
+      @levels = levels unless levels.nil?
       @graph.levels = @levels
           
       # generate nodes in each level
@@ -204,7 +272,7 @@ module Pixy
       for i in 0..@levels do
         nr_nodes = rand(3) + @min_nodes_per_level
         for j in 0..nr_nodes do
-          @graph.add_node(Node.new("node_#{i}_#{j}", j, i, node_val))
+          @graph.add_node(Node.new(j, i, node_val))
         end
       end
       
@@ -215,7 +283,7 @@ module Pixy
       # from there on, nodes can have from 0-4 edges
       @graph.nodes.each { |node|
         for i in 0..rand(2) do
-          cand = find_candidate(node)
+          cand = @graph.find_candidate(node)
           @graph.connect(node, cand, edge_val) unless cand.nil?
         end
       }
@@ -231,23 +299,7 @@ module Pixy
       rand(9)
     end
     
-    # attempts to find a candidate node to connect with
-    # given node based on their level:
-    #   * if the node is not connected yet, find a preferably
-    #     unconnected node in the same level or the one beyond it
-    #     # if no unconnected nodes exist: connect to a random node
-    #       in the same level or the one beyond it
-    #   * if the node is connected, find a node from a level to which
-    #     it's not yet connected
-    #
-    def find_candidate(node)
-      neighbors = @graph.neighbors(node)
-      return nil if neighbors.empty?
 
-      tmp = neighbors[rand(neighbors.length-1)]
-      # puts "Found a node #{tmp.name} out of #{neighbors.length} neighbors for node #{node.name}"
-      return tmp
-    end
     
   end
   
