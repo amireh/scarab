@@ -48,10 +48,10 @@ Scarab = function() {
         $("#caret").remove();*/
       
       el_class = (el_class == null) ? "" : " class='" + el_class + "'";
-      $("#meta ul").append("<li" + el_class + "><span>$. " + msg + "</span></li>");
+      $(".console .result").before("<li" + el_class + "><span>$. " + msg + "</span></li>");
       //var li = $("#meta ul li:last span:first");
       
-      if ($(".console ul li").length > 20) { $(".console ul li:first").remove() };
+      //if ($(".console ul li").length > 20) { $(".console ul li:first").remove() };
       //this.caret_msg(li, msg, 0);
       
     },

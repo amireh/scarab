@@ -158,6 +158,10 @@
   cursor: default;
 }
 
+.console .success {
+  color: #0b7000;
+}
+
 .console .error {
   color: #a60000;
 }
@@ -169,3 +173,5 @@
   width:100%;
   font-family: "Monospace";
 }
+
+

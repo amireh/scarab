@@ -154,8 +154,8 @@ Graph.prototype = {
       name = "EUCLIDEAN";
     }
     
-    $("#meta .heuristic").remove();
-    Scarab.log("heuristic set to: " + name, "heuristic");
+    //$("#meta .heuristic").remove();
+    $("#choose-heuristic a").html("Heuristic: " + name, "heuristic");
   },
 
   manhattan: function(start, end) {
@@ -260,8 +260,7 @@ Graph.prototype = {
       //console.log("path found");
       //Scarab.log("G:" + goal.g + ", H:" + goal.h + ", F:" + goal.f);
       // display time taken for the search
-      $(".timer").remove();
-      Scarab.log("path found in [" + time_elapsed + "ms]", "timer");
+      $(".console .result .result-label").removeClass("error").addClass("success").html("path found in [" + time_elapsed + "ms]");
 
       goal.to_be_highlighted = true;
       var curr = current;
@@ -278,8 +277,8 @@ Graph.prototype = {
     } else {
       // we didn't find a path
       //console.log("path not found");
-      $(".error").remove();
-      Scarab.log("search failed; no path found", "error");
+      
+      $(".console .result .result-label").removeClass("success").addClass("error").html("search failed; no path found");
       return false;
     }
   } // Graph.search()

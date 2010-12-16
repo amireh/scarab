@@ -11,7 +11,7 @@ function print_graph(graph) {
   
   $("#loader .loading").html("..VISUALIZING..");
       
-  $("#meta ul").empty();
+  $("#meta ul li").each(function() { if (!$(this).hasClass("result")) { $(this).remove(); }});
   /*
   $("#meta").html("<p>there are <span>" + graph.meta[1] + "</span> nodes connected by "
     + "<span>" + graph.meta[2] + "</span> edges across <span>"
@@ -153,18 +153,18 @@ $(function() {
   $("#toggle-animations").click(function() {
     Scarab.toggle_animations();
     if (Scarab.Animated)
-      $(this).find('a').html("Animations: turn OFF");
+      $(this).find('a').html("Animations: ON");
     else
-      $(this).find('a').html("Animations: turn ON");
+      $(this).find('a').html("Animations: OFF");
     return false;
   });
 
   $("#toggle-inspection").click(function() {
     Scarab.toggle_inspection();
     if (Scarab.Inspection)
-      $(this).find('a').html("Node Inspection: turn OFF");
+      $(this).find('a').html("Node Inspection: ON");
     else
-      $(this).find('a').html("Node Inspection: turn ON");
+      $(this).find('a').html("Node Inspection: OFF");
     return false;
   });
   
