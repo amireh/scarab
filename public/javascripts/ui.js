@@ -28,7 +28,11 @@ function print_graph(graph) {
     
     $("#canvas").css("background-image", "none");
 
-    $("#toggle-weights").removeClass("disabled");
+    if (Scarab.GraphType == "Random")
+      $("#toggle-weights").removeClass("disabled");
+    else
+      $("#toggle-weights").addClass("disabled");
+      
     $("#choose-heuristic").removeClass("disabled");
     $("#toggle-animations").removeClass("disabled");
     $("#toggle-inspection").removeClass("disabled");
@@ -48,25 +52,43 @@ function show_overlay(el_id) {
   $("#overlay .close-overlay:first").show();
   $("#" + el_id).show();
   $("#overlay").show();
+    
 };
 
-function hide_overlays() { $("#overlay").hide(); };
+function hide_overlays() { 
+  $("#overlay").hide();
+};
 
 $(function() {
-  
- 
-  Scarab.setup();
-  Scarab.log("$c4r4b");  
-  //$("#loader").hide();
-  $("#overlay").hide();
 
-  
   var welcome_closed = false;
   var loading_closed = false;
+  var grid_size_specified = false;
+  var grid_size = 0;
+  
+  Scarab.setup();
+  Scarab.log("$c4r4b");
+
+  $("#overlay").hide();
+  $("#legend").hide();  
   
   $("#tooltip-loading").addClass("hidden");
   $("#tooltip-welcome").show();
-  $("#legend").hide();
+
+  $("#tooltips").show();
+  
+	$( "#grid-size-slider" ).slider({
+		value:7,
+		min: 2,
+		max: 13,
+		step: 1,
+		slide: function( event, ui ) {
+		  Scarab.GridSize = parseInt(ui.value);
+			$("#grid-size").html( ui.value + "x" + ui.value );
+		}
+	});
+	$( "#grid-size" ).html( $( "#grid-size-slider" ).slider( "value" ) + "x" + $( "#grid-size-slider" ).slider( "value" ));
+		
   $("#generate-graph").click(function() {
 
     $.ajax({
@@ -79,14 +101,14 @@ $(function() {
         $("#tooltip-welcome").hide();
         if (!loading_closed) {
           $("#tooltip-loading").show();
-          $("#tooltips").show();          
+          $("#tooltips").show();
         }
         $("#canvas").show();
         $("#canvas").css("background", "url('/images/loader.gif') #111 no-repeat center center");
         $("#loader .loading").show();
       },
       success: function(data) {
-        
+        Scarab.GraphType = "Random";
         graph = data;
         setTimeout(print_graph, 1000, graph);
       }
@@ -94,28 +116,35 @@ $(function() {
 
     return false;
     
-  }).click();
+  });
   
   $("#generate-grid").click(function() {
-
+    show_overlay("overlay-generate-grid");
+  });
+  
+  $("#do-generate-grid").click(function() {
+    
+    hide_overlays();
+    
     $.ajax({
       type: "GET",
       dataType: 'json',
       url: "/grid.json",
+      data: { size: $( "#grid-size-slider" ).slider( "value" )-1 },
       beforeSend: function() {
         Scarab.cleanup();
         $("#about").hide();
         $("#tooltip-welcome").hide();
         if (!loading_closed) {
           $("#tooltip-loading").show();
-          $("#tooltips").show();          
+          $("#tooltips").show();
         }
         $("#canvas").show();
         $("#canvas").css("background", "url('/images/loader.gif') #111 no-repeat center center");
         $("#loader .loading").show();
       },
       success: function(data) {
-        
+        Scarab.GraphType = "Grid";
         graph = data;
         setTimeout(print_graph, 1000, graph);
       }
@@ -123,7 +152,7 @@ $(function() {
 
     return false;
     
-  }).click();
+  });
   
   $("#toggle-weights").click(function() {
     if ($(this).hasClass("disabled"))
@@ -180,20 +209,26 @@ $(function() {
   });
   
   $("#toggle-animations").click(function() {
+    if ($(this).hasClass("disabled"))
+      return false;
+        
     Scarab.toggle_animations();
     if (Scarab.Animated)
-      $(this).find('a').html("Animations: ON");
+      $(this).find('a span').removeClass("red").addClass("green").html("ON");
     else
-      $(this).find('a').html("Animations: OFF");
+      $(this).find('a span').removeClass("green").addClass("red").html("OFF");
     return false;
   });
 
   $("#toggle-inspection").click(function() {
+    if ($(this).hasClass("disabled"))
+      return false;
+    
     Scarab.toggle_inspection();
     if (Scarab.Inspection)
-      $(this).find('a').html("Node Inspection: ON");
+      $(this).find('a span').removeClass("red").addClass("green").html("ON");
     else
-      $(this).find('a').html("Node Inspection: OFF");
+      $(this).find('a span').removeClass("green").addClass("red").html("OFF");
     return false;
   });
   

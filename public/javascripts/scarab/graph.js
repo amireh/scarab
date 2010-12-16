@@ -25,7 +25,7 @@ Graph.prototype = {
     var pos = { x: 0, y: 0 };
     
     var win_w = 840 - dim.w;
-    var win_h = 560 - dim.h;
+    var win_h = 520 - dim.h;
     
     if (this.step.level != level) {
       this.step.x = parseInt( (win_w - (nr_levels * dim.w)) / nr_levels);
@@ -48,15 +48,19 @@ Graph.prototype = {
   },
 
 	find_grid_node_pos: function(id, level) {
-		var dim = Meta.Node.Dim;
-    
-    var pos = { x: 0, y: 0 };
-    
+		var dim = Meta.GridNode.Dim;
 
-    pos.x += level * (dim.w + 3) + 10;
-    pos.y += id * (dim.h + 3) + 10;
-    
+    var pos = { x: 0, y: 0 };
+    if (this.step.x == 0) {
+      var nr_levels = Meta.Count.Levels;
       
+      this.step.x = (820 - (nr_levels * (dim.w + 3))) / 2;
+      this.step.y = (520 - (nr_levels * (dim.w + 3))) / 2;
+      Scarab.log("Step: " + this.step.x);
+    }
+    pos.x += level * (dim.w + 3) + this.step.x;
+    pos.y += id * (dim.h + 3) + this.step.y;
+
     return pos;
 	},
   create_node: function(level, id, val) {

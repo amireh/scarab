@@ -2,9 +2,15 @@ Scarab = {};
 Meta = {
   Node: {
     Dim: { 
-      w: 36, 
-      h: 36 
+      w: 48, 
+      h: 48 
     }, 
+  },
+  GridNode: {
+    Dim: {
+      w: 36,
+      h: 36
+    }
   },
   Count: {
     Levels: 0,
@@ -18,6 +24,7 @@ Meta = {
   }
 };
 
+Scarab.GridSize = 0;
 Scarab.Canvas = null;
 Scarab.Context = null;
 Scarab.Animated = true;
@@ -74,6 +81,9 @@ Scarab = function() {
 			}
 			*/
 			Scarab.Canvas = Raphael(Meta.Canvas.Element, Meta.Canvas.Width, Meta.Canvas.Height);
+      Scarab.Animated = true; 
+      Scarab.Inspection = true;    
+      Scarab.WeightsToggled = false;			
 			//$("#meta ul").append("<li>scarab:~$ waiting<span id='caret'></span></li>");
 			//setInterval(Scarab.console_caret, 500);
     },
@@ -85,11 +95,8 @@ Scarab = function() {
       Meta.Count.Levels = data.meta[0];
       Meta.Count.Nodes = data.meta[1];
       Meta.Count.Edges = data.meta[2];
-
-      Scarab.Animated = true; 
-      Scarab.Inspection = true;    
-      Scarab.WeightsToggled = false; 
       
+            
       this.graph.populate(data.meta.root, data.nodes, data.edges, data.levels);
 
       callback();

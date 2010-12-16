@@ -158,6 +158,12 @@
   cursor: default;
 }
 
+.controls ul li span.green {
+  color: green;
+}
+.controls ul li span.red {
+  color: #a60000;
+}
 .console .success {
   color: #0b7000;
 }

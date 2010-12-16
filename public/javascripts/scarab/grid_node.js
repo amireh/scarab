@@ -12,7 +12,7 @@ function GridNode() {
   this.edges = [];
   this.parent = "moo";
   
-  this.dim = Meta.Node.Dim;
+  this.dim = Meta.GridNode.Dim;
   this.pos = { x: 0, y: 0};
   
   // shapes

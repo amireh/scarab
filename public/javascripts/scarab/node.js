@@ -68,11 +68,11 @@ Node.prototype = {
 	
 	  this.label.node.my_node = this;
 	  this.circle.node.my_node = this;
-	
+	  /*
 	  $(this.label.node).mouseover(function() {
 	    this.my_node.highlight();
 	  });
-	
+	  */
     $(this.circle.node).mouseover(function() {
       this.my_node.highlight();
       

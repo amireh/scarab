@@ -85,7 +85,14 @@ module Pixy
       content_type :json
       
       scarab = Scarab.new
-      scarab.generate_grid(12).to_json
+      scarab.generate_graph.to_json
+    end
+    
+    get '/grid.json' do
+      content_type :json
+
+      scarab = Scarab.new
+      scarab.generate_grid(params[:size].to_i).to_json
     end
 
   end

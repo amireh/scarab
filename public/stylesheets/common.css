@@ -48,9 +48,7 @@ h1,h2,h3 {
 .footer {
   -moz-border-radius: 5px;
   border-radius: 5px;  
-  -moz-box-shadow:0 0 10px 1px #999999;
-  -webkit-box-shadow:0 0 10px 1px #999999;
-  width: 1058px;
+  width: 1060px;
   clear: both;
   padding: 0 10px;
   text-align: center;

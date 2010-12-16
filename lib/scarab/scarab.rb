@@ -343,10 +343,11 @@ module Pixy
       # connect the levels
       # each level must be connected by at least 1 edge with the next one
       # from there on, nodes can have from 0-4 edges
-      @graph.nodes.each { |node|
-        for i in 0..rand(2) do
-          cand = @graph.find_candidate(node)
-          @graph.connect(node, cand, edge_val) unless cand.nil?
+      @graph.nodes.each { |level| level.each do |node|
+          for x in 0..rand(2) do
+            cand = @graph.find_candidate(node)
+            @graph.connect(node, cand, edge_val) unless cand.nil?
+          end
         end
       }
       

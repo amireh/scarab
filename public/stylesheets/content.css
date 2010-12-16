@@ -107,6 +107,10 @@
   width: 49%;
   font-size: 24px;
 }
+#overlay-generate-grid .button {
+  margin: 20px auto;
+  width: 320px;
+}
 .formulae {
   font-style: italic;
   font-size: 13px;
@@ -211,7 +215,7 @@
 #legend span.graph-help {
   position: relative;
   top: -4px;
-  left: 240px;
+  float: right;
   color: #a60000;
 	font-size: 1em;
 }
