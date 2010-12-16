@@ -96,6 +96,35 @@ $(function() {
     
   }).click();
   
+  $("#generate-grid").click(function() {
+
+    $.ajax({
+      type: "GET",
+      dataType: 'json',
+      url: "/grid.json",
+      beforeSend: function() {
+        Scarab.cleanup();
+        $("#about").hide();
+        $("#tooltip-welcome").hide();
+        if (!loading_closed) {
+          $("#tooltip-loading").show();
+          $("#tooltips").show();          
+        }
+        $("#canvas").show();
+        $("#canvas").css("background", "url('/images/loader.gif') #111 no-repeat center center");
+        $("#loader .loading").show();
+      },
+      success: function(data) {
+        
+        graph = data;
+        setTimeout(print_graph, 1000, graph);
+      }
+    });
+
+    return false;
+    
+  }).click();
+  
   $("#toggle-weights").click(function() {
     if ($(this).hasClass("disabled"))
       return false;

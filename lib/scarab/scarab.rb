@@ -354,7 +354,7 @@ module Pixy
     end
     
     def node_val
-      rand(8) + 1
+      rand(20) + 1
     end
     
     def edge_val

@@ -7,24 +7,6 @@ function GridEdge() {
   this.weight = 0;
   this.index = null;  
   
-  this.orig = { x: 0, y: 0 };
-  this.dest = { x: 0, y: 0 };
-  
-  // shapes
-  this.line = null;
-  this.pointer = null;
-  this.label = null;
-  
-  // shape styles
-  this.styles = { 
-    line:   { stroke: "#FFFFFF", "stroke-width": "0.5px" }
-  };
-  
-  // this is set to true when this edge is part of a path
-  // being highlighted; it locks the edge from being
-  // de-highlighted on hover
-  this.path_highlighted = false;
-  
 };
 
 GridEdge.prototype = {
@@ -33,56 +15,7 @@ GridEdge.prototype = {
     this.index = in_id;
     this.head = in_head;
     this.tail = in_tail;
-    this.weight = in_weight;
-    
-    this.orig = this.head.pos;
-    this.dest = this.tail.pos;
-
-		var dim = Meta.Node.Dim;
-		
-    this.line = Scarab.Canvas.path("M" + 
-      (this.orig.x + dim.w / 2) + " " + (this.orig.y + dim.h / 2) + 
-      "L" + 
-      (this.dest.x + dim.w / 2) + " " + (this.dest.y + dim.h / 2)
-    );
-      
-    this.line.attr(this.styles.line);
-
-  },
-
-  highlight: function() {
-    if (!this.path_highlighted)
-      this.line.attr({ stroke: "green", "stroke-width": "2px" });
-    
-  },
-    
-  dehighlight : function() {
-
-    if (!this.path_highlighted)
-      this.line.attr(this.styles.line);
-
-  },
-
-  // list is an array of edges, index is the index of the
-  // the current edge.. this method recursively calls the
-  // next edge in the list to get highlighted
-  highlight_path: function(list, index) {
-    var self = this;
-
-    //this.path_highlighted = false;
-    //this.dehighlight();
-    
-    this.line.animate({ stroke: "red", "stroke-width": "2px"}, 250, "bounce", function() {
-      self.path_highlighted = true;
-      if (index+1 != list.length)
-        return list[index+1].highlight_path(list, index+1);
-      else {
-        var goal = list[index].head.to_be_highlighted ? list[index].head : list[index].tail;
-        goal.goal = true;
-        goal.highlight_goal();
-        return true;
-      }
-    });
+    this.weight = in_weight; 
   }
 
 };

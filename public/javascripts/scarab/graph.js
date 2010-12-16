@@ -10,7 +10,8 @@ function Graph() {
   this.last_path = null;
 	this.visited_counter = 0;
   this.heuristic = this.manhattan;
-
+  this.gfunct = this.search_graph;
+  this.highlight_path = this.highlight_graph;
 };
 
 Graph.prototype = {
@@ -48,33 +49,13 @@ Graph.prototype = {
 
 	find_grid_node_pos: function(id, level) {
 		var dim = Meta.Node.Dim;
-    var nr_levels = Meta.Count.Levels+1;
-    var nr_nodes = nr_levels;
     
     var pos = { x: 0, y: 0 };
     
-    var win_w = 820 - dim.w + (nr_levels * 10);
-    var win_h = 520 - dim.h + (nr_levels * 10);
+
+    pos.x += level * (dim.w + 3) + 10;
+    pos.y += id * (dim.h + 3) + 10;
     
-    if (this.step.level != level) {
-      this.step.x = parseInt( (win_w - (nr_levels * dim.w)) / nr_levels);
-      this.step.y = parseInt( (win_h - (nr_nodes * dim.h)) / nr_nodes );
-    }
-    
-    
-    pos.x = level * (dim.w + this.step.x) + this.step.x;
-    //if (nr_levels >= 8)
-    //  pos.x += dim.w/2;
-    
-    pos.y = id * (dim.h + this.step.y) + this.step.y;
-    /*
-    if (nr_nodes == 4)
-      pos.y += dim.h/3;
-    else if (nr_nodes > 4)
-      pos.y += dim.h/3;
-    else {
-    }
-    */
       
     return pos;
 	},
@@ -90,9 +71,6 @@ Graph.prototype = {
 			this.nodes[level][id] = new GridNode();
 			this.nodes[level][id].create(id, level, val, this.find_grid_node_pos(id, level));
 		}
-			
-
-		
     //this.nodes[level][id].create(id, level, val, pos_funct(id, level));
   },
 
@@ -135,6 +113,14 @@ Graph.prototype = {
     $("#meta p").append("<br /><label id='timer'></label>");
     
     this.set_heuristic("manhattan");
+    if (Scarab.GraphType == "Random") {
+      this.gfunct = this.search_graph;
+      this.highlight_path = this.highlight_graph;
+    } else {
+      this.gfunct = this.search_grid;
+      this.highlight_path = this.highlight_grid;
+    }
+    
   },
 
   find_edges: function(node) {
@@ -162,9 +148,28 @@ Graph.prototype = {
     return null;
   },
 
-  highlight_path: function() {
+  highlight_grid: function() {
     if (!this.last_path) {
-      console.log("ERROR! There's no path to highlight.");
+      Scarab.log("ERROR! There's no path to highlight.", "error");
+      return false;
+    }
+    $("#replay-path").removeClass("disabled");
+    
+    path = this.last_path;
+    var _nodes = [];
+    if (path.length != 0) {
+      $.each(path, function(id, node) {
+        node.styles.current = node.styles.visited;
+        node.dehighlight();
+        _nodes.push(node);
+      });
+      
+    }
+    _nodes[0].highlight_path(_nodes, 0);
+  },
+  highlight_graph: function() {
+    if (!this.last_path) {
+      Scarab.log("ERROR! There's no path to highlight.", "error");
       return false;
     }
     
@@ -185,10 +190,24 @@ Graph.prototype = {
       
     }
     //console.log("Highlighting path");
-    _edges[0].highlight_path(_edges, 0);
-
+    _edges[0].highlight_path(_edges, 0);  
   },
-
+  
+  highlight_visited: function() {
+    // highlight visited nodes
+    $.each(this.nodes, function(level, nodes) {
+      $.each(nodes, function(id, node) {
+        if (node.visited && !node.path_highlighted)
+          node.highlight_visited();
+      });
+    });
+  },
+  search_grid: function(current, neighbor) {
+    return current.g + current.val;
+  },
+  search_graph: function(current, neighbor) {
+     return current.g + this.connection(current, neighbor).weight;  
+  },
   set_heuristic: function(h) {
 
     var name;
@@ -228,11 +247,13 @@ Graph.prototype = {
       });
     });
     
-    $.each(this.edges, function(id, edge) {
-      edge.path_highlighted = false;
-      edge.dehighlight();
-    });
-
+    if (Scarab.GraphType == "Random") {
+      $.each(this.edges, function(id, edge) {
+        edge.path_highlighted = false;
+        edge.dehighlight();
+      });
+    }
+    
 		this.visited_counter = 0;
   },
 
@@ -269,7 +290,7 @@ Graph.prototype = {
 		      continue;
 	      }
         
-	      var g_score = current.g + this.connection(current, neighbor).weight;
+        var g_score = this.gfunct(current, neighbor);
 	      var been_visited = neighbor.visited;
 
 	      if(!been_visited || g_score < neighbor.g) {
@@ -298,13 +319,8 @@ Graph.prototype = {
     var timer_finish = new Date();
     var time_elapsed = timer_finish.getTime() - timer_start.getTime();
     
-    // highlight visited nodes
-    $.each(this.nodes, function(level, nodes) {
-      $.each(nodes, function(id, node) {
-        if (node.visited)
-          node.highlight_visited();
-      });
-    });
+
+		this.highlight_visited();
 		
 		$(".console .visited-counter").remove();
     Scarab.log("visited " + this.visited_counter + " nodes", "visited-counter");
