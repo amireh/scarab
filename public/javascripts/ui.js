@@ -80,7 +80,7 @@ $(function() {
 	$( "#grid-size-slider" ).slider({
 		value:11,
 		min: 2,
-		max: 21,
+		max: 20,
 		step: 1,
 		slide: function( event, ui ) {
 		  Scarab.GridSize = parseInt(ui.value);

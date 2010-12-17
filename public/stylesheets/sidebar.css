@@ -91,7 +91,7 @@
 .console li {
   float: left;
   clear: both;
-  font-family: "Monospace";
+  font-family: "Monospace", "Courier";
 }
 
 .console li span {
@@ -177,7 +177,7 @@
   float:left;
   padding-top:5px !important;
   width:100%;
-  font-family: "Monospace";
+  font-family: "Monospace", "Courier";
 }
 
 
