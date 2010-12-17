@@ -78,13 +78,15 @@ $(function() {
   $("#tooltips").show();
   
 	$( "#grid-size-slider" ).slider({
-		value:7,
+		value:11,
 		min: 2,
-		max: 13,
+		max: 21,
 		step: 1,
 		slide: function( event, ui ) {
 		  Scarab.GridSize = parseInt(ui.value);
-			$("#grid-size").html( ui.value + "x" + ui.value );
+			var x = ui.value;
+			var y = (ui.value >= 13) ? 13 : ui.value;
+			$("#grid-size").html( x + "x" + y );
 		}
 	});
 	$( "#grid-size" ).html( $( "#grid-size-slider" ).slider( "value" ) + "x" + $( "#grid-size-slider" ).slider( "value" ));

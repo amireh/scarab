@@ -311,10 +311,12 @@ module Pixy
     
     def generate_grid(size)
       @grid = Graph.new
-      @grid.levels = @levels = size
+      @grid.levels = @nr_nodes = @levels = size
+      @nr_nodes = 12 if @levels >= 12
+      puts "grid of size #{@levels}x#{@nr_nodes}"      
       
       for i in 0..@levels do
-        for j in 0..@levels do
+        for j in 0..@nr_nodes do
           @grid.add_node(Node.new(j, i, node_val))
         end
       end

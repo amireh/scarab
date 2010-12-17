@@ -52,10 +52,11 @@ Graph.prototype = {
 
     var pos = { x: 0, y: 0 };
     if (this.step.x == 0) {
+			var nr_nodes = this.levels[level];
       var nr_levels = Meta.Count.Levels;
       
       this.step.x = (820 - (nr_levels * (dim.w + 3))) / 2;
-      this.step.y = (520 - (nr_levels * (dim.w + 3))) / 2;
+      this.step.y = (520 - (nr_nodes * (dim.w + 3))) / 2;
       Scarab.log("Step: " + this.step.x);
     }
     pos.x += level * (dim.w + 3) + this.step.x;
