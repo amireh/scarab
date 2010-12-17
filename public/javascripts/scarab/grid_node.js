@@ -52,7 +52,7 @@ GridNode.prototype = {
   create: function(in_id, in_level, in_val, in_pos) {
     this.index = in_id;
     this.level = in_level;
-    this.val = in_val * 10;
+    this.val = in_val * 2;
     this.pos = in_pos;
   },
 
