@@ -57,7 +57,7 @@ Graph.prototype = {
       
       this.step.x = (820 - (nr_levels * (dim.w + 3))) / 2;
       this.step.y = (520 - (nr_nodes * (dim.w + 3))) / 2;
-      Scarab.log("Step: " + this.step.x);
+      //Scarab.log("Step: " + this.step.x);
     }
     pos.x += level * (dim.w + 3) + this.step.x;
     pos.y += id * (dim.h + 3) + this.step.y;
@@ -93,6 +93,8 @@ Graph.prototype = {
     this.root = in_root;
     this.levels = in_levels;
     
+    timer_b = new Date();
+    
     var self = this;
     $.each(in_nodes, function(level_id, nodes) {
       $.each(nodes, function(id, val) {
@@ -100,6 +102,8 @@ Graph.prototype = {
       });
     });
     
+    $("#loader .loading").html("..VISUALIZING..");
+      
     $.each(in_edges, function(id, params) {
       self.create_and_draw_edge(parseInt(id), params[0], params[1], parseInt(params[2]));
     });
@@ -126,6 +130,8 @@ Graph.prototype = {
       this.highlight_path = this.highlight_grid;
     }
     
+    timer_e = new Date();
+    Scarab.log("loaded in " + (timer_e.getTime() - timer_b.getTime()) + "ms");
   },
 
   find_edges: function(node) {

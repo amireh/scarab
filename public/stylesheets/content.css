@@ -109,13 +109,18 @@
 }
 #overlay-generate-grid .button {
   margin: 20px auto;
-  width: 320px;
+  width: 100%;
+  font-size: 1.5em;
 }
 .formulae {
   font-style: italic;
   font-size: 13px;
 }
 
+#grid-size {
+  font-weight: bold;
+  font-size: 1.3em;
+}
 /* ------------- *
  * PAGE & CANVAS *
  * ------------- */

@@ -10,7 +10,8 @@ Meta = {
     Dim: {
       w: 36,
       h: 36
-    }
+    },
+    MaxCost: 100
   },
   Count: {
     Levels: 0,
@@ -32,6 +33,7 @@ Scarab.Inspection = true;
 Scarab.WeightsToggled = false;
 
 Scarab.GraphType = "Grid";
+Scarab.SearchType = "safest";
 
 Scarab = function() {
 

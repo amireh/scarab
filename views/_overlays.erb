@@ -66,5 +66,15 @@
   <h1>Generating a GRID</h1>
   <p>Specify the size of the grid: <span id="grid-size"></span></p>
   <div id="grid-size-slider"></div>
+  <p>What should we search for?</p>
+  <input type="radio" name="search-type" value="safest">
+    <strong>Safest path</strong> (avoiding costly nodes is most important, regardless of how long it takes)
+  </input><br />
+  <input type="radio" name="search-type" value="shortest">
+    <strong>Shortest path</strong> (will bypass most nodes, regardless of cost, except for obstacles)
+  </input><br />
+  <input type="radio" name="search-type" value="neutral" checked="CHECKED">
+    <strong>Little bit of both</strong> (avoid high-cost nodes when you can but not at the cost of a very long route)
+  </input><br />
   <input type="button" class="button" id="do-generate-grid" value="Generate" />
 </div>
