@@ -210,6 +210,10 @@
 .legend-visited {
   background: #333;
 }
+.legend-obstacle {
+  background: #111;
+}
+
 .legend-path {
   color: #a60000;
   text-align: center;
