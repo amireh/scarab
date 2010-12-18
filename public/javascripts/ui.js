@@ -9,7 +9,6 @@ function print_graph(graph) {
   Scarab.cleanup();
   $("#canvas").show();
   
-  $("#loader .loading").html("..VISUALIZING..");
       
   $("#meta ul li").each(function() { if (!$(this).hasClass("result")) { $(this).remove(); }});
   /*
@@ -86,10 +85,10 @@ $(function() {
 		  Scarab.GridSize = parseInt(ui.value);
 			var x = ui.value;
 			var y = (ui.value >= 13) ? 13 : ui.value;
-			$("#grid-size").html( x + "x" + y );
+			$("#grid-size").html( '[ ' + x + "x" + y + ' ]' );
 		}
 	});
-	$( "#grid-size" ).html( $( "#grid-size-slider" ).slider( "value" ) + "x" + $( "#grid-size-slider" ).slider( "value" ));
+	$( "#grid-size" ).html( '[ ' + $( "#grid-size-slider" ).slider( "value" ) + "x" + $( "#grid-size-slider" ).slider( "value" ) + ' ]');
 		
   $("#generate-graph").click(function() {
 
@@ -107,6 +106,7 @@ $(function() {
         }
         $("#canvas").show();
         $("#canvas").css("background", "url('/images/loader.gif') #111 no-repeat center center");
+        $("#loader .loading").html("..GENERATING..");
         $("#loader .loading").show();
       },
       success: function(data) {
@@ -143,12 +143,15 @@ $(function() {
         }
         $("#canvas").show();
         $("#canvas").css("background", "url('/images/loader.gif') #111 no-repeat center center");
+        $("#loader .loading").html("..GENERATING..");
         $("#loader .loading").show();
       },
       success: function(data) {
         Scarab.GraphType = "Grid";
+        Scarab.SearchType = $("input[name^='search-type']:checked").val();
         graph = data;
-        setTimeout(print_graph, 1000, graph);
+        $("#loader .loading").html("..VISUALIZING..");
+        setTimeout(print_graph, 10, graph);
       }
     });
 

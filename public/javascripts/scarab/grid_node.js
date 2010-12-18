@@ -26,6 +26,8 @@ function GridNode() {
   this.goal = false; // toggled when the node is ready to be highlighted as goal of the path
   this.to_be_highlighted = false; // when this node is the goal of a path
   this.path_highlighted = false;
+  this.path_highlighting = false;
+  this.is_obstacle = false;
   
   this.styles = {
     normal: { fill: "#000", stroke: "orange", "stroke-width": "2px", cursor: "pointer" },
@@ -33,6 +35,7 @@ function GridNode() {
     root:   { fill: "#a60000" },
     goal:   { fill: "#0b7000" },
     visited:{ fill: "#333" },
+    obstacle: { fill: "#111" },
     label:  { fill: "#ffffff", font: "11px verdana", "font-weight": "bold", cursor: "pointer"}
   };
   this.styles.current = this.styles.normal;
@@ -44,36 +47,56 @@ GridNode.prototype = {
     el = $(".console .inspector");
     el.empty();
     el.append("<span>" + this + "</span>");
-    el.append("<br /># of connections: <span>" +  this.edges.length + "</span>");
     el.append("<br />f: <span>" + this.f + "</span> g: <span>" + this.g + "</span> h: <span>" + this.h + "</span>");
-    el.append("<br />node value: <span>" + this.val + "</span>");
   },
 
   create: function(in_id, in_level, in_val, in_pos) {
     this.index = in_id;
     this.level = in_level;
-    this.val = in_val * 10;
+    this.val = in_val;
+    
+    if (Scarab.SearchType == "safest")
+      cost_fact = 10;
+    else if (Scarab.SearchType == "neutral") {
+      cost_fact = 3;
+    } else
+      cost_fact = 1;
+    
+    this.val *= cost_fact;
+    // obstacles, prevent passing through them regardless
+    // of search type
+    if (this.val == Meta.GridNode.MaxCost * cost_fact) {
+      this.val = 10000;
+      this.is_obstacle = true;
+      this.styles.normal.fill = "#111";// = this.styles.obstacle;
+      this.styles.visited.fill = "#111";
+    }
+    
     this.pos = in_pos;
   },
 
   draw: function() {
 
     this.circle = Scarab.Canvas.rect(this.pos.x, this.pos.y, this.dim.w, this.dim.h, 5);
-    this.circle.attr(this.styles.normal);
+    this.circle.attr(this.styles.current);
 	
-	  var label_txt = this.val;
-	  this.label = Scarab.Canvas.text(this.pos.x + this.dim.w / 2, this.pos.y + this.dim.h / 2, label_txt);
-	  this.label.attr(this.styles.label);
+    if (!this.is_obstacle) {	  
+
+	    var label_txt = this.val;
+	    if (Scarab.SearchType == "safest")
+	      label_txt /= 10; // just make it more readable
+
+  	  this.label = Scarab.Canvas.text(this.pos.x + this.dim.w / 2, this.pos.y + this.dim.h / 2, label_txt);
+  	  this.label.attr(this.styles.label);
+
+  	  this.label.node.my_node = this;
+  	}
 
 	  //self = this;
 	
-	  this.label.node.my_node = this;
+
 	  this.circle.node.my_node = this;
 	
-	  /*$(this.label.node).mouseover(function() {
-	    this.my_node.highlight();
-	  });
-	*/
     $(this.circle.node).mouseover(function() {
       this.my_node.highlight();
       
@@ -85,7 +108,9 @@ GridNode.prototype = {
       this.my_node.dehighlight();
     });
     
-    $(this.label.node).click(function() { $(this.my_node.circle.node).click(); });
+    if (this.label)
+      $(this.label.node).click(function() { $(this.my_node.circle.node).click(); });
+    
     $(this.circle.node).click(function() { Scarab.graph.search(null, this.my_node, null); });
         
   },
@@ -120,6 +145,12 @@ GridNode.prototype = {
   
   highlight_path: function(list, index) {
     var self = this;
+    
+    // if the highlighting was interrupted
+    // by another pathfinding
+    if (!this.path_highlighting)
+      return true;
+    
     if (index+1 == list.length) {
       var goal = list[index]
       goal.path_highlighted = true;
@@ -169,6 +200,7 @@ GridNode.prototype = {
     this.parent = null;
     this.goal = false;
     this.to_be_highlighted = false;
+    this.path_highlighting = false;
     this.path_highlighted = false;
     this.styles.current = this.styles.normal;
     this.dehighlight();

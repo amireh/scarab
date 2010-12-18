@@ -57,7 +57,7 @@ Graph.prototype = {
       
       this.step.x = (820 - (nr_levels * (dim.w + 3))) / 2;
       this.step.y = (520 - (nr_nodes * (dim.w + 3))) / 2;
-      Scarab.log("Step: " + this.step.x);
+      //Scarab.log("Step: " + this.step.x);
     }
     pos.x += level * (dim.w + 3) + this.step.x;
     pos.y += id * (dim.h + 3) + this.step.y;
@@ -93,6 +93,8 @@ Graph.prototype = {
     this.root = in_root;
     this.levels = in_levels;
     
+    timer_b = new Date();
+    
     var self = this;
     $.each(in_nodes, function(level_id, nodes) {
       $.each(nodes, function(id, val) {
@@ -100,6 +102,8 @@ Graph.prototype = {
       });
     });
     
+    $("#loader .loading").html("..VISUALIZING..");
+      
     $.each(in_edges, function(id, params) {
       self.create_and_draw_edge(parseInt(id), params[0], params[1], parseInt(params[2]));
     });
@@ -126,6 +130,8 @@ Graph.prototype = {
       this.highlight_path = this.highlight_grid;
     }
     
+    timer_e = new Date();
+    Scarab.log("loaded in " + (timer_e.getTime() - timer_b.getTime()) + "ms");
   },
 
   find_edges: function(node) {
@@ -166,6 +172,7 @@ Graph.prototype = {
       $.each(path, function(id, node) {
         node.styles.current = node.styles.visited;
         node.dehighlight();
+        node.path_highlighting = true;
         _nodes.push(node);
       });
       
@@ -265,6 +272,11 @@ Graph.prototype = {
   search: function(start, goal) {
 
     this.reset();
+    if (goal.is_obstacle) {
+      Scarab.log_result("invalid destination", false);
+      return false;
+    }
+      
     var timer_start = new Date();
     
     start = this.root;
@@ -327,16 +339,15 @@ Graph.prototype = {
 
 		this.highlight_visited();
 		
-		$(".console .visited-counter").remove();
     Scarab.log("visited " + this.visited_counter + " nodes", "visited-counter");
     if (open.size() != 0) {
-      // we found a path, trace it
-      //console.log("path found");
-      //Scarab.log("G:" + goal.g + ", H:" + goal.h + ", F:" + goal.f);
+  
       // display time taken for the search
-      $(".console .result .result-label").removeClass("error").addClass("success").html("path found in [" + time_elapsed + "ms]");
+      Scarab.log_result("path found in [" + time_elapsed + "ms]", true);
 
       goal.to_be_highlighted = true;
+      
+      // dump the path into a list
       var curr = current;
       var ret = [];
       while(curr.parent) {
@@ -344,17 +355,17 @@ Graph.prototype = {
 	      curr = curr.parent;
       }
       this.last_path = ret.reverse();
+      
+      Scarab.log("path is " + this.last_path.length + " steps long", "path-length");
       this.highlight_path();
 
       //log("Path found to " + goal);
       return true;
-    } else {
-      // we didn't find a path
-      //console.log("path not found");
-      
-      $(".console .result .result-label").removeClass("success").addClass("error").html("search failed; no path found");
-      return false;
     }
+
+    // we didn't find a path
+    Scarab.log_result("search failed; no path found", false);
+    return false;
   } // Graph.search()
 
 };

@@ -10,7 +10,8 @@ Meta = {
     Dim: {
       w: 36,
       h: 36
-    }
+    },
+    MaxCost: 100
   },
   Count: {
     Levels: 0,
@@ -32,6 +33,7 @@ Scarab.Inspection = true;
 Scarab.WeightsToggled = false;
 
 Scarab.GraphType = "Grid";
+Scarab.SearchType = "safest";
 
 Scarab = function() {
 
@@ -53,17 +55,23 @@ Scarab = function() {
       return setTimeout(Scarab.caret_msg, 50, el, msg, i+1);
     },
     log: function(msg, el_class) {
-    /*
-      if ($("#caret"))
-        $("#caret").remove();*/
-      
+
+      if (el_class) {
+        var el = $(".console ." + el_class);
+        if (el.length) {
+          el.find("span").html("$. " + msg);
+          return;
+        }
+      }
+        
       el_class = (el_class == null) ? "" : " class='" + el_class + "'";
-      $(".console .result").before("<li" + el_class + "><span>$. " + msg + "</span></li>");
-      //var li = $("#meta ul li:last span:first");
-      
-      //if ($(".console ul li").length > 20) { $(".console ul li:first").remove() };
-      //this.caret_msg(li, msg, 0);
-      
+      $(".console .result").before("<li" + el_class + "><span>$. " + msg + "</span></li>");      
+    },
+    log_result: function(msg, success) {
+      if (success)
+        $(".console .result .result-label").removeClass("error").addClass("success").html(msg);
+      else
+        $(".console .result .result-label").removeClass("success").addClass("error").html(msg);
     },
     setup: function() {
       /*
